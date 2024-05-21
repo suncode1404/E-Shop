@@ -1,0 +1,15 @@
+
+.aside {
+    min-height: 100vh;
+}
+.user img {
+    height: 40px;
+}
+.list-group-item:hover {
+    background-color: rgba(105, 108, 255, .16);
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+.manLatop {
+    height: 180px;
+}
