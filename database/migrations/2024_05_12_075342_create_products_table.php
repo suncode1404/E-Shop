@@ -11,9 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('categories',function (Blueprint $table) {
+            $table->id();
+            $table->string('name',100);
+            $table->integer('priority')->default(0)->comment('Thứ tự xuất hiện');
+            $table->boolean('hidden')->default(0)->comment('0 là ẩn, 1 là hiện');
+        });
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name',255);
+            $table->foreignId('category_id')->constrained('categories');
+            $table->string('name', 255);
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->string('image');
@@ -31,5 +38,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('categories');
     }
 };

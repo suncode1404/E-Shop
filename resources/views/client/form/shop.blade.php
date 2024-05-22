@@ -15,15 +15,11 @@
                     <div class="shop-sidebar">
                         <!-- Single Widget -->
                         <div class="single-widget category">
-                            <h3 class="title">Categories</h3>
+                            <h3 class="title">Danh mục</h3>
                             <ul class="categor-list">
-                                <li><a href="#">T-shirts</a></li>
-                                <li><a href="#">jacket</a></li>
-                                <li><a href="#">jeans</a></li>
-                                <li><a href="#">sweatshirts</a></li>
-                                <li><a href="#">trousers</a></li>
-                                <li><a href="#">kitwears</a></li>
-                                <li><a href="#">accessories</a></li>
+                                @foreach ($categories as $cg)
+                                    <li><a href="{{route('client.shop.related',$cg->id)}}">{{$cg->name}}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                         <!--/ End Single Widget -->
@@ -104,8 +100,9 @@
                                         </a>
                                         <div class="button-head">
                                             <div class="product-action">
-                                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" data-productName="products"
-                                                    data-productId="{{ $key }}"><i class=" ti-eye"></i><span>Quick
+                                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
+                                                    data-productName="products" data-productId="{{ $key }}"><i
+                                                        class=" ti-eye"></i><span>Quick
                                                         Shop</span></a>
                                                 <a title="Wishlist"><i class=" ti-heart "></i><span>Add to
                                                         Wishlist</span></a>

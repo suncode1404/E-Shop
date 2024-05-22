@@ -1,15 +1,22 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
+use App\Models\Categories;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $products = Product::take(8)->get();
-    $productHot = Product::orderBy('heart', 'desc')->take(8)->get();
-    return view('client.form.home', compact("products", "productHot"));
+    $categories = Categories::all();
+    // dd($categories);
+    //Phương thức active lấy ra sản phẩm active mặc định 8 sp
+    $products = Product::active(8)->get();
+    //Phương thức hot lấy ra sản phẩm hot mặc định 8 sp
+    $productHot = Product::hot()->get();
+    return view('client.form.home', compact("products", "productHot",'categories'));
 })->name('client.home');
 
 Route::fallback(function() {
@@ -17,21 +24,12 @@ Route::fallback(function() {
 });
 
 Route::get('/shop', [ProductController::class, 'index'])->name('client.shop');
-
+Route::get('/shop/related/{id?}', [ProductController::class, 'related'])->name('client.shop.related');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('client.product');
 
-Route::get('/contact', function () {
-    $title = 'Liên hệ';
-    return view('client.form.contact', compact("title"));
-})->name('client.contact');
-Route::get('/cart/checkout', function () {
-    $title = 'Thanh toán';
-    return view('client.form.checkout', compact("title"));
-})->name('client.checkout');
-Route::get('/cart', function () {
-    $title = 'Giỏ hàng';
-    return view('client.form.cart', compact("title"));
-})->name('client.cart');
+Route::get('/contact',[ContactController::class,'index'])->name('client.contact');
+Route::get('/cart/checkout',[CartController::class,'checkout'])->name('client.checkout');
+Route::get('/cart',[CartController::class,'cart'])->name('client.cart');
 Route::group(['middleware' => ['guest']], function () {
     //Login
     Route::get('/login', [LoginController::class, 'index'])->name('account.login');

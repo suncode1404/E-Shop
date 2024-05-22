@@ -131,8 +131,8 @@
                     name.innerHTML = nameText;
                     price.innerHTML = formattedNumber + "đ";
                         imgAll.forEach((img, index, array) => {
-                            img.src = 'images/'+imgText
-                            // console.log(img);
+                            img.src = window.location.origin+'/images/'+imgText
+                            console.log(img);
                         })
                 }
 

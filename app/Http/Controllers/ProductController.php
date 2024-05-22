@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -21,7 +21,13 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $products = Product::all();
-        $title = $products[$id]->name;
-        return view('client.form.product', compact("title"));
+        $product = $products[$id];
+        $productHot = Product::hot()->get();
+        return view('client.form.product', compact("product", "productHot"));
+    }
+    public function related(string $id) {
+        $title = 'Sản phẩm';
+        $products = Product::where('category_id',$id)->search()->paginate(6)->withQueryString();
+        return view('client.form.shop', compact("title", "products"));
     }
 }

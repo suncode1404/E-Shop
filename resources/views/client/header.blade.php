@@ -118,7 +118,7 @@
                          <div class="all-category {{ !Route::is('client.home') ? 'd-none' : '' }}">
                              <h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>Danh mục</h3>
                              <ul class="main-category">
-                                 <li><a href="#">New Arrivals <i class="fa fa-angle-right"
+                                 {{-- <li><a href="#">New Arrivals <i class="fa fa-angle-right"
                                              aria-hidden="true"></i></a>
                                      <ul class="sub-category">
                                          <li><a href="#">accessories</a></li>
@@ -172,15 +172,17 @@
                                              </div>
                                          </li>
                                      </ul>
-                                 </li>
-                                 <li><a href="#">accessories</a></li>
-                                 <li><a href="#">top 100 offer</a></li>
+                                 </li> --}}
+                                 @foreach ($categories as $cg)          
+                                    <li><a href="#">{{$cg->name}}</a></li>
+                                 @endforeach
+                                 {{-- <li><a href="#">top 100 offer</a></li>
                                  <li><a href="#">sunglass</a></li>
                                  <li><a href="#">watch</a></li>
                                  <li><a href="#">man’s product</a></li>
                                  <li><a href="#">ladies</a></li>
                                  <li><a href="#">westrn dress</a></li>
-                                 <li><a href="#">denim </a></li>
+                                 <li><a href="#">denim </a></li> --}}
                              </ul>
                          </div>
                      </div>
