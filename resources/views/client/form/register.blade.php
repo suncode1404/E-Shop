@@ -39,6 +39,13 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating mb-3">
+                                            <x-form.field_input name='phone'>
+                                                Phone
+                                            </x-form.field_input>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
                                             <x-form.field_input name='password' type="password">
                                                 Password
                                             </x-form.field_input>
@@ -48,6 +55,13 @@
                                         <div class="form-floating mb-3">
                                             <x-form.field_input name='password_confirmation' type="password">
                                                 Confirm Password
+                                            </x-form.field_input>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            <x-form.field_input name='address' type="text">
+                                                Address
                                             </x-form.field_input>
                                         </div>
                                     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,21 +48,13 @@ class LoginController extends Controller
     {
         return view('client.form.register');
     }
-    public function processRegister(Request $request)
+    public function processRegister(UserRequest $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
-        ]);
-
-        if (!$validator->passes()) {
-            return redirect()->route('account.register')->withInput()->withErrors($validator);
-        }
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
         $user->password = bcrypt($request->password);
         $user->role = 'user';
         $user->save();
