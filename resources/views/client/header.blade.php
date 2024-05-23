@@ -42,36 +42,40 @@
                              <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                          </div>
                          <div class="sinlge-bar shopping">
-                             <a href="{{ route('client.cart') }}" class="single-icon"><i class="ti-bag"></i> <span
-                                     class="total-count">2</span></a>
+                             <a href="{{ route('client.cart') }}" class="single-icon"><i class="ti-bag"></i>
+                                 <span class="total-count">
+                                     {{ is_array(session('cart')) ? sizeof(session('cart')) : 0 }}
+                                 </span>
+                             </a>
                              <!-- Shopping Item -->
                              <div class="shopping-item">
                                  <div class="dropdown-cart-header">
-                                     <span>2 Items</span>
+                                     <span> {{ is_array(session('cart')) ? sizeof(session('cart')) : 0 }} Items</span>
                                      <a href="#">View Cart</a>
                                  </div>
                                  <ul class="shopping-list">
-                                     <li>
-                                         <a href="#" class="remove" title="Remove this item"><i
-                                                 class="fa fa-remove"></i></a>
-                                         <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                 alt="#"></a>
-                                         <h4><a href="#">Woman Ring</a></h4>
-                                         <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                     </li>
-                                     <li>
-                                         <a href="#" class="remove" title="Remove this item"><i
-                                                 class="fa fa-remove"></i></a>
-                                         <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                 alt="#"></a>
-                                         <h4><a href="#">Woman Necklace</a></h4>
-                                         <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                     </li>
+                                     @if (is_array(session('cart')))
+                                         @foreach (session('cart') as $key => $sp)
+                                             @if ($sp['user'] == Auth::user())
+                                                 <li>
+                                                     <a href="{{ route('client.cart.logout', $key) }}" class="remove"
+                                                         title="Remove this item"><i class="fa fa-remove"></i></a>
+                                                     <a class="cart-img" href="#"><img
+                                                             src="{{ asset('images/' . $sp['image']) }}"
+                                                             alt="#"></a>
+                                                     <h4><a href="#">{{ $sp['name'] }}</a></h4>
+                                                     <p class="quantity">{{ $sp['quantity'] }} - <span
+                                                             class="amount">{{ number_format($sp['price'], 2, '.', '.') }}vnđ</span>
+                                                     </p>
+                                                 </li>
+                                             @endif
+                                         @endforeach
+                                     @endif
                                  </ul>
                                  <div class="bottom">
                                      <div class="total">
                                          <span>Total</span>
-                                         <span class="total-amount">$134.00</span>
+                                         <span class="total-amount">00</span>
                                      </div>
                                      <a href="{{ route('client.checkout') }}" class="btn animate">Thanh toán</a>
                                  </div>
@@ -84,7 +88,7 @@
                                  <div class="sinlge-bar d-flex" style="width: 200px;">
                                      <a href="#" class="single-icon"><i class="fa fa-user-circle-o"
                                              aria-hidden="true"></i></a>
-                                     <div class="px-2 single-icon">{{auth()->user()->name}}</div>
+                                     <div class="px-2 single-icon">{{ auth()->user()->name }}</div>
                                  </div>
                                  <!-- Shopping Item -->
                                  <div class="shopping-item">
@@ -93,7 +97,7 @@
                                          <li>Đổi mặt khẩu</li>
                                      </ul>
                                      <div class="bottom">
-                                         <a href="{{route('account.logout')}}" class="btn animate">Đăng xuát</a>
+                                         <a href="{{ route('account.logout') }}" class="btn animate">Đăng xuát</a>
                                      </div>
                                  </div>
                                  <!--/ End Shopping Item -->
@@ -173,8 +177,8 @@
                                          </li>
                                      </ul>
                                  </li> --}}
-                                 @foreach ($categories as $cg)          
-                                    <li><a href="#">{{$cg->name}}</a></li>
+                                 @foreach ($categories as $cg)
+                                     <li><a href="#">{{ $cg->name }}</a></li>
                                  @endforeach
                                  {{-- <li><a href="#">top 100 offer</a></li>
                                  <li><a href="#">sunglass</a></li>

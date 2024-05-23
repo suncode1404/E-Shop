@@ -67,7 +67,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Sản phẩm ưa chuộng </h2>
+                        <h2>Sản phẩm ưa dùng</h2>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                                                                 <a data-toggle="modal" data-target="#exampleModal"
                                                                     title="Quick View" data-productName="products"
                                                                     data-productId="{{ $key }}"><i
-                                                                        class=" ti-eye"></i><span>Xem nhanh sản1
+                                                                        class=" ti-eye"></i><span>Xem nhanh sản
                                                                         phẩm</span></a>
                                                                 <a title="Wishlist" href="#"><i
                                                                         class=" ti-heart "></i><span>Thêm danh sách yêu
@@ -115,7 +115,7 @@
                                                                         sánh</span></a>
                                                             </div>
                                                             <div class="product-action-2">
-                                                                <a title="Add to cart" href="#">Thêm vào giỏ
+                                                                <a title="Add to cart" href="{{route('client.cart.add',$pd->id)}}">Thêm vào giỏ
                                                                     hàng</a>
                                                             </div>
                                                         </div>

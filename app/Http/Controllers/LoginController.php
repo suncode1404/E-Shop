@@ -70,8 +70,9 @@ class LoginController extends Controller
     }
     public function logout(Request $request)
     {
+        // dd(Auth::user());
         Auth::logout();
-        $request->session()->flush();
+        // $request->session()->flush();
         return redirect()->route('account.login');
     }
 }
