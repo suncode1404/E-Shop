@@ -43,32 +43,34 @@
                          </div>
                          <div class="sinlge-bar shopping">
                              <a href="{{ route('client.cart') }}" class="single-icon"><i class="ti-bag"></i>
-                                 <span class="total-count">
-                                     {{ is_array(session('cart')) ? sizeof(session('cart')) : 0 }}
-                                 </span>
+                                 @if (auth()->check())
+                                     <span class="total-count">
+                                         {{ session('cart' . Auth::id()) ? sizeof(session('cart' . Auth::id())) : 0 }}
+                                     </span>
+                                 @endif
                              </a>
                              <!-- Shopping Item -->
                              <div class="shopping-item">
                                  <div class="dropdown-cart-header">
-                                     <span> {{ is_array(session('cart')) ? sizeof(session('cart')) : 0 }} Items</span>
+                                     <span>
+                                         {{ session('cart' . Auth::id()) ? sizeof(session('cart' . Auth::id())) : 0 }}
+                                         Items</span>
                                      <a href="#">View Cart</a>
                                  </div>
                                  <ul class="shopping-list">
-                                     @if (is_array(session('cart')))
-                                         @foreach (session('cart') as $key => $sp)
-                                             @if ($sp['user'] == Auth::user())
-                                                 <li>
-                                                     <a href="{{ route('client.cart.logout', $key) }}" class="remove"
-                                                         title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                     <a class="cart-img" href="#"><img
-                                                             src="{{ asset('images/' . $sp['image']) }}"
-                                                             alt="#"></a>
-                                                     <h4><a href="#">{{ $sp['name'] }}</a></h4>
-                                                     <p class="quantity">{{ $sp['quantity'] }} - <span
-                                                             class="amount">{{ number_format($sp['price'], 2, '.', '.') }}vnđ</span>
-                                                     </p>
-                                                 </li>
-                                             @endif
+                                     @if (is_array(session('cart' . Auth::id())) || is_object(session('cart' . Auth::id())))
+                                         @foreach (session('cart' . Auth::id()) as $key => $sp)
+                                             <li>
+                                                 <a href="{{ route('client.cart.logout', $key) }}" class="remove"
+                                                     title="Remove this item"><i class="fa fa-remove"></i></a>
+                                                 <a class="cart-img" href="{{ route('client.product', $key) }}"><img
+                                                         src="{{ asset('images/' . $sp->product->image) }}"
+                                                         alt="#"></a>
+                                                 <h4><a href="#">{{ $sp['name'] }}</a></h4>
+                                                 <p class="quantity">{{ $sp['quantity'] }} - <span
+                                                         class="amount">{{ number_format($sp['price'], 2, '.', '.') }}vnđ</span>
+                                                 </p>
+                                             </li>
                                          @endforeach
                                      @endif
                                  </ul>

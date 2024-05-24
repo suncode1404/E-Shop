@@ -17,6 +17,7 @@ class isUser
     public function handle(Request $request, Closure $next): Response
     {
         if(!Auth::user()) {
+            toast('Bạn phải đăng nhập để sử dụng chức năng này  ', 'error');
             return redirect()->route('account.login');
         }
         return $next($request);

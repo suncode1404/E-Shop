@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,72 +23,42 @@ class CartController extends Controller
 
     public function add(string $id)
     {
-        // // Lấy thông tin sản phẩm
+        // Lấy thông tin sản phẩm từ yêu cầu
         $product = Product::findOrFail($id);
-        // Thêm sản phẩm vào giỏ hàng
-        $cart = session()->get('cart', []);
-        // dd($cart);
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        
+        // Lấy thông tin giỏ hàng của người dùng hiện tại
+        $cart = Cart::firstOrCreate([
+            'user_id' => Auth::id()
+        ]);
+        $cartItemAll = CartItem::where('cart_id',$cart->id)->get();
+        // Lấy thông tin sản phẩm trong giỏ hàng
+        $cartItem = CartItem::firstOrNew([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id
+        ]);
+
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        if ($cartItem->exists) {
+            $cartItem->quantity++;
         } else {
-            $cart[$id] = [
-                "user" => Auth::user(),
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
-                "image" => $product->image
-            ];
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
+            $cartItem->quantity = 1;
+            $cartItem->price = $product->price;
         }
-        // dd($cart);
-        session()->put('cart', $cart);
-        // Chuyển hướng về trang hiển thị giỏ hàng
+
+        // Lưu thông tin sản phẩm trong giỏ hàng
+        $cartItem->save();
+        // Thêm biến cartItem vào session
+        session()->put('cart'.Auth::id(), $cartItemAll);
+        // dd(session('cart'.Auth::id()));
+        // Chuyển hướng người dùng về trang trước đó
         return redirect()->back();
     }
 
-    // public function add(string $id)
-    // {
-    //     $product = Product::findOrFail($id);
-
-    //     // Kiểm tra xem người dùng có đăng nhập không
-    //     if (Auth::check()) {
-    //         // Người dùng đã đăng nhập
-    //         // Lưu sản phẩm vào giỏ hàng của người dùng
-    //         $cart = Cart::where('user_id', Auth::id())->where('product_id', $id)->first();
-    //         if ($cart) {
-    //             $cart->quantity++;
-    //             $cart->save();
-    //         } else {
-    //             Cart::create([
-    //                 'user_id' => Auth::id(),
-    //                 'product_id' => $id,
-    //                 'quantity' => 1,
-    //                 'price' => $product->price,
-    //                 'image' => $product->image
-    //             ]);
-    //         }
-    //     } else {
-    //         // Người dùng chưa đăng nhập
-    //         // Lưu sản phẩm vào giỏ hàng trong session
-    //         $cart = session()->get('cart', []);
-    //         if (isset($cart[$id])) {
-    //             $cart[$id]['quantity']++;
-    //         } else {
-    //             $cart[$id] = [
-    //                 "name" => $product->name,
-    //                 "quantity" => 1,
-    //                 "price" => $product->price,
-    //                 "image" => $product->image
-    //             ];
-    //         }
-    //         session()->put('cart', $cart);
-    //     }
-
-    //     return redirect()->back();
-    // }
     public function logout(string $id)
     {
         // Lấy giỏ hàng từ session
-        $cart = session('cart');
+        $cart = session('cart'.Auth::id());
         unset($cart[$id]);
         session()->put('cart', $cart);
         // Chuyển hướng về trang hiển thị giỏ hàng

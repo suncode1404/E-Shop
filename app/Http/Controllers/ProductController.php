@@ -20,10 +20,9 @@ class ProductController extends Controller
 
     public function show(string $id)
     {
-        $products = Product::all();
-        $product = $products[$id];
+        $product = Product::where('id',$id)->get()->first();
         $productHot = Product::hot()->get();
-        return view('client.form.product', compact("product", "productHot"));
+        return view('client.form.product', compact("product","productHot"));
     }
     public function related(string $id) {
         $title = 'Sản phẩm';

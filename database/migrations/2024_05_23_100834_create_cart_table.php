@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('cart', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->integer('total_price');
+            $table->float('total_price')->default(0);
             $table->timestamps();
         });
         Schema::create('cart_item', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cart_id')->constrained('cart');
             $table->foreignId('product_id')->constrained('products');
-            $table->integer('total_price');
+            $table->float('total_price')->default(0);
             $table->integer('quantity');
-            $table->integer('price');
+            $table->float('price');
             $table->timestamps();
         });
     }
