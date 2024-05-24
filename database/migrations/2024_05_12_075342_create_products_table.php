@@ -11,17 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories',function (Blueprint $table) {
+        
+
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name',100);
+            $table->string('name', 100);
             $table->integer('priority')->default(0)->comment('Thứ tự xuất hiện');
             $table->boolean('hidden')->default(0)->comment('0 là ẩn, 1 là hiện');
         });
+        
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories');
             $table->string('name', 255);
             $table->text('description');
+            $table->mediumText('short_description')->nullable();
+            $table->integer('quantity_available')->comment('số lượng có sẵn');
             $table->decimal('price', 8, 2);
             $table->string('image');
             $table->boolean('hot')->default(0)->comment('0 là bình thường, 1 là hot');
@@ -30,6 +35,28 @@ return new class extends Migration
             $table->boolean('hidden')->default(0)->comment('0 là ẩn, 1 là hiện');
             $table->timestamps();
         });
+
+        Schema::create('product_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products');
+            $table->string('img_thumbnail', 255);
+        });
+        Schema::create('company', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100);
+        });
+        Schema::create('product_specification', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products');
+            $table->string('content', 255);
+            $table->foreignId('company_id')->constrained('company');
+            $table->string('type');
+            $table->integer('ram');
+            $table->integer('capacity');
+            $table->integer('screen_size');
+            $table->string('card_screen');
+        });
+       
     }
 
     /**
@@ -37,7 +64,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
         Schema::dropIfExists('categories');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('company');
+        Schema::dropIfExists('product_specification');
+        Schema::dropIfExists('product_images');
     }
 };
