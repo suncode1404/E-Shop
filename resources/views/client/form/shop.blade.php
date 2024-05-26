@@ -111,7 +111,8 @@
                                                         Compare</span></a>
                                             </div>
                                             <div class="product-action-2">
-                                                <a title="Add to cart" href="#">Add to cart</a>
+                                                <a title="Add to cart" href="{{route('client.cart.add',$pd->id)}}">Thêm vào giỏ
+                                                    hàng</a>
                                             </div>
                                         </div>
                                     </div>

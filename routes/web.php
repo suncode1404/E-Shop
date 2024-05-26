@@ -45,6 +45,7 @@ Route::group(['middleware' => ['users']], function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('account.logout');
     //Add product in cart
     Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('client.cart.add');
+    Route::post('/cart/addProduct/{id}', [CartController::class, 'addProduct'])->name('client.cart.addProduct');
     Route::get('/cart/logout/{id}', [CartController::class, 'logout'])->name('client.cart.logout');
 });
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');

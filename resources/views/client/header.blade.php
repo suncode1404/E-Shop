@@ -59,17 +59,20 @@
                                  </div>
                                  <ul class="shopping-list">
                                      @if (is_array(session('cart' . Auth::id())) || is_object(session('cart' . Auth::id())))
+                                         <?php $totalAmount = 0; ?>
                                          @foreach (session('cart' . Auth::id()) as $key => $sp)
                                              <li>
                                                  <a href="{{ route('client.cart.logout', $key) }}" class="remove"
                                                      title="Remove this item"><i class="fa fa-remove"></i></a>
-                                                 <a class="cart-img" href="{{ route('client.product', $key) }}"><img
+                                                 <a class="cart-img"
+                                                     href="{{ route('client.product', $sp->product->id) }}"><img
                                                          src="{{ asset('images/' . $sp->product->image) }}"
                                                          alt="#"></a>
-                                                 <h4><a href="#">{{ $sp['name'] }}</a></h4>
+                                                 <h4><a href="#">{{ $sp->product->name }}</a></h4>
                                                  <p class="quantity">{{ $sp['quantity'] }} - <span
                                                          class="amount">{{ number_format($sp['price'], 2, '.', '.') }}vnđ</span>
                                                  </p>
+                                                 <?php $totalAmount += $sp['quantity'] * $sp['price']; ?>
                                              </li>
                                          @endforeach
                                      @endif
@@ -77,7 +80,7 @@
                                  <div class="bottom">
                                      <div class="total">
                                          <span>Total</span>
-                                         <span class="total-amount">00</span>
+                                         <span class="total-amount">{{ number_format($totalAmount, 2, '.', '.') }}vnđ</span>
                                      </div>
                                      <a href="{{ route('client.checkout') }}" class="btn animate">Thanh toán</a>
                                  </div>
@@ -124,71 +127,10 @@
                          <div class="all-category {{ !Route::is('client.home') ? 'd-none' : '' }}">
                              <h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>Danh mục</h3>
                              <ul class="main-category">
-                                 {{-- <li><a href="#">New Arrivals <i class="fa fa-angle-right"
-                                             aria-hidden="true"></i></a>
-                                     <ul class="sub-category">
-                                         <li><a href="#">accessories</a></li>
-                                         <li><a href="#">best selling</a></li>
-                                         <li><a href="#">top 100 offer</a></li>
-                                         <li><a href="#">sunglass</a></li>
-                                         <li><a href="#">watch</a></li>
-                                         <li><a href="#">man’s product</a></li>
-                                         <li><a href="#">ladies</a></li>
-                                         <li><a href="#">westrn dress</a></li>
-                                         <li><a href="#">denim </a></li>
-                                     </ul>
-                                 </li>
-                                 <li class="main-mega"><a href="#">best selling <i class="fa fa-angle-right"
-                                             aria-hidden="true"></i></a>
-                                     <ul class="mega-menu">
-                                         <li class="single-menu">
-                                             <a href="#" class="title-link">Shop Kid's</a>
-                                             <div class="image">
-                                                 <img src="https://via.placeholder.com/225x155" alt="#">
-                                             </div>
-                                             <div class="inner-link">
-                                                 <a href="#">Kids Toys</a>
-                                                 <a href="#">Kids Travel Car</a>
-                                                 <a href="#">Kids Color Shape</a>
-                                                 <a href="#">Kids Tent</a>
-                                             </div>
-                                         </li>
-                                         <li class="single-menu">
-                                             <a href="#" class="title-link">Shop Men's</a>
-                                             <div class="image">
-                                                 <img src="https://via.placeholder.com/225x155" alt="#">
-                                             </div>
-                                             <div class="inner-link">
-                                                 <a href="#">Watch</a>
-                                                 <a href="#">T-shirt</a>
-                                                 <a href="#">Hoodies</a>
-                                                 <a href="#">Formal Pant</a>
-                                             </div>
-                                         </li>
-                                         <li class="single-menu">
-                                             <a href="#" class="title-link">Shop Women's</a>
-                                             <div class="image">
-                                                 <img src="https://via.placeholder.com/225x155" alt="#">
-                                             </div>
-                                             <div class="inner-link">
-                                                 <a href="#">Ladies Shirt</a>
-                                                 <a href="#">Ladies Frog</a>
-                                                 <a href="#">Ladies Sun Glass</a>
-                                                 <a href="#">Ladies Watch</a>
-                                             </div>
-                                         </li>
-                                     </ul>
-                                 </li> --}}
+                                 {{-- Categrory --}}
                                  @foreach ($categories as $cg)
                                      <li><a href="#">{{ $cg->name }}</a></li>
                                  @endforeach
-                                 {{-- <li><a href="#">top 100 offer</a></li>
-                                 <li><a href="#">sunglass</a></li>
-                                 <li><a href="#">watch</a></li>
-                                 <li><a href="#">man’s product</a></li>
-                                 <li><a href="#">ladies</a></li>
-                                 <li><a href="#">westrn dress</a></li>
-                                 <li><a href="#">denim </a></li> --}}
                              </ul>
                          </div>
                      </div>
