@@ -13,23 +13,43 @@ class CartController extends Controller
     public function cart()
     {
         $title = 'Giỏ hàng';
-        $cartItemAll = CartItem::all();
-        return view('client.form.cart', compact("title","cartItemAll"));
+        $cartItemAll =  session('cart' . Auth::id());
+        return view('client.form.cart', compact("title", "cartItemAll"));
     }
     public function checkout()
     {
         $title = 'Thanh toán';
-        return view('client.form.checkout', compact("title"));
+        $cartItems = session()->get('cart' . Auth::id());
+        if (count($cartItems) == 0) {
+            // Session chứa các phần tử và không rỗng
+            toast('Phải có sản phẩm mới được đặt hàng', 'error');
+            return redirect()->back();
+        }
+        //Lấy user
+        $user = Auth::user();
+        return view('client.form.checkout', compact("title","user"));
     }
 
     public function add(string $id)
     {
         // Lấy thông tin sản phẩm từ yêu cầu
         $product = Product::findOrFail($id);
-        // Lấy thông tin giỏ hàng của người dùng hiện tại
-        $cart = Cart::firstOrCreate([
-            'user_id' => Auth::id()
-        ]);
+        // Lấy giỏ hàng hiện tại của người dùng
+        $cart = Cart::where('user_id', Auth::id())->first();
+
+        if ($cart && $cart->total_price != 0) {
+            // Giỏ hàng hiện tại có total khác 0, không cần tạo mới giỏ hàng
+            // Thực hiện các thao tác khác tại đây nếu cần
+            $cart = Cart::create([
+                'user_id' => Auth::id(),
+                // Các trường khác có thể cần thiết cho việc tạo giỏ hàng mới
+            ]);
+        } else {
+            // Nếu không có giỏ hàng hoặc total = 0, tạo mới giỏ hàng
+            $cart = Cart::firstOrCreate([
+                'user_id' => Auth::id()
+            ]);
+        }
         // Lấy thông tin sản phẩm trong giỏ hàng
         $cartItem = CartItem::firstOrNew([
             'cart_id' => $cart->id,
@@ -57,13 +77,24 @@ class CartController extends Controller
     }
     public function addProduct(string $id, Request $request)
     {
-        // dd($request);
         // Lấy thông tin sản phẩm từ yêu cầu
         $product = Product::findOrFail($id);
-        // Lấy thông tin giỏ hàng của người dùng hiện tại
-        $cart = Cart::firstOrCreate([
-            'user_id' => Auth::id()
-        ]);
+        // Lấy giỏ hàng hiện tại của người dùng
+        $cart = Cart::where('user_id', Auth::id())->first();
+
+        if ($cart && $cart->total_price != 0) {
+            // Giỏ hàng hiện tại có total khác 0, không cần tạo mới giỏ hàng
+            // Thực hiện các thao tác khác tại đây nếu cần
+            $cart = Cart::create([
+                'user_id' => Auth::id(),
+                // Các trường khác có thể cần thiết cho việc tạo giỏ hàng mới
+            ]);
+        } else {
+            // Nếu không có giỏ hàng hoặc total = 0, tạo mới giỏ hàng
+            $cart = Cart::firstOrCreate([
+                'user_id' => Auth::id()
+            ]);
+        }
         // Lấy thông tin sản phẩm trong giỏ hàng
         $cartItem = CartItem::firstOrNew([
             'cart_id' => $cart->id,
@@ -95,8 +126,15 @@ class CartController extends Controller
         $cart = session('cart' . Auth::id());
         CartItem::where('id', $cart[$id]->id)->delete();
         unset($cart[$id]);
-        session()->put('cart', $cart);
+        // Cập nhật lại chỉ số index
+        // array_values($cart->toArray());
+        session()->put('cart' . Auth::id(), $cart);
         // Chuyển hướng về trang hiển thị giỏ hàng
         return redirect()->back();
+    }
+
+    public function payment() {
+        alert('Đặt hàng thành công','Cảm ơn quý khách đã tin tưởng dịch vụ của E-shop','success');
+        return  redirect()->route('client.home');
     }
 }

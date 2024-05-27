@@ -58,8 +58,8 @@
                                      <a href="#">View Cart</a>
                                  </div>
                                  <ul class="shopping-list">
+                                     <?php $totalAmount = 0; ?>
                                      @if (is_array(session('cart' . Auth::id())) || is_object(session('cart' . Auth::id())))
-                                         <?php $totalAmount = 0; ?>
                                          @foreach (session('cart' . Auth::id()) as $key => $sp)
                                              <li>
                                                  <a href="{{ route('client.cart.logout', $key) }}" class="remove"
@@ -80,7 +80,8 @@
                                  <div class="bottom">
                                      <div class="total">
                                          <span>Total</span>
-                                         <span class="total-amount">{{ number_format($totalAmount, 2, '.', '.') }}vnđ</span>
+                                         <span
+                                             class="total-amount">{{ number_format($totalAmount, 2, '.', '.') }}vnđ</span>
                                      </div>
                                      <a href="{{ route('client.checkout') }}" class="btn animate">Thanh toán</a>
                                  </div>

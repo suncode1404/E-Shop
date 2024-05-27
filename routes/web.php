@@ -28,7 +28,6 @@ Route::get('/shop/related/{id?}', [ProductController::class, 'related'])->name('
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('client.product');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('client.contact');
-Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('client.checkout');
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 
 Route::group(['middleware' => ['guest']], function () {
@@ -47,5 +46,7 @@ Route::group(['middleware' => ['users']], function () {
     Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('client.cart.add');
     Route::post('/cart/addProduct/{id}', [CartController::class, 'addProduct'])->name('client.cart.addProduct');
     Route::get('/cart/logout/{id}', [CartController::class, 'logout'])->name('client.cart.logout');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('client.checkout');
+    Route::get('/car/payment',[CartController::class, 'payment'])->name('client.cart.payment');
 });
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');

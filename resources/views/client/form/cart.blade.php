@@ -23,40 +23,35 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- {{dd($cartItemAll)}} --}}
+                            <?php $totalPay = 0; ?>
                             @foreach ($cartItemAll as $key => $item)
                                 <tr>
                                     <td class="image" data-title="No"><img class="image-fluid"
                                             src="{{ asset('images/' . $item->product->image) }}" alt="#"></td>
                                     <td class="product-des" data-title="Description">
-                                        <p class="product-name"><a href="{{route('client.product',$item->product->id)}}">{{ $item->product->name }}</a></p>
+                                        <p class="product-name"><a
+                                                href="{{ route('client.product', $item->product->id) }}">{{ $item->product->name }}</a>
+                                        </p>
                                         <p class="product-des">{{ $item->product->short_description }}</p>
                                     </td>
                                     <td class="price" data-title="Price">
                                         <span>{{ number_format($item->product->price, 2, '.', '.') }}đ</span>
                                     </td>
-                                    <td class="qty" data-title="Qty"><!-- Input Order -->
-                                        <div class="input-group">
-                                            <div class="button minus">
-                                                <button type="button" class="btn btn-primary btn-number"
-                                                    disabled="disabled" data-type="minus" data-field="quant[1]">
-                                                    <i class="ti-minus"></i>
-                                                </button>
-                                            </div>
-                                            <input type="text" name="quant[1]" class="input-number" data-min="1"
-                                                data-max="100" value="{{ $item->quantity }}">
-                                            <div class="button plus">
-                                                <button type="button" class="btn btn-primary btn-number" data-type="plus"
-                                                    data-field="quant[1]">
-                                                    <i class="ti-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!--/ End Input Order -->
+                                    <td class="qty" data-title="Qty">
+                                        {{-- Quantity --}}
+                                        <x-form.field_input type="number" name="quantity_available" error="false"
+                                            min="1" max="{{ $item->product->quantity_available }}"
+                                            value="{{ $item->quantity }}">
+                                        </x-form.field_input>
                                     </td>
-                                    <td class="total-amount" data-title="Total">
-                                        <span>{{ number_format($item->product->price * $item->quantity, 2, '.', '.') }}đ</span></td>
-                                    <td class="action" data-title="Remove"><a href="{{ route('client.cart.logout', $key) }}"><i
+                                    <td class="total-amount" id="total-amount" data-title="Total">
+                                        <span>{{ number_format($item->product->price * $item->quantity, 2, '.', '.') }}đ</span>
+                                    </td>
+                                    <td class="action" data-title="Remove"><a
+                                            href="{{ route('client.cart.logout', $key) }}"><i
                                                 class="ti-trash remove-icon"></i></a></td>
+                                    <?php $totalPay += $item->product->price * $item->quantity; ?>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -86,10 +81,13 @@
                             <div class="col-lg-4 col-md-7 col-12">
                                 <div class="right">
                                     <ul>
-                                        <li>Cart Subtotal<span>$330.00</span></li>
-                                        <li>Shipping<span>Free</span></li>
-                                        <li>You Save<span>$20.00</span></li>
-                                        <li class="last">You Pay<span>$310.00</span></li>
+                                        <li id="cartsubtotal">Cart
+                                            Subtotal<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                        </li>
+                                        <li>Shipping<span></span></li>
+                                        <li>You Save<span></span></li>
+                                        <li class="last">You Pay<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                        </li>
                                     </ul>
                                     <div class="button5">
                                         <a href="{{ route('client.checkout') }}" class="btn">Thanh toán</a>
@@ -151,3 +149,31 @@
     </section>
     <!-- End Shop Newsletter -->
 @endsection
+
+<script>
+    document.addEventListener('input', function(event) {
+        // Kiểm tra nếu phần tử được thay đổi là một phần tử <input> trong cột "Quantity"
+        if (event.target.closest('input[name="quantity_available"]')) {
+            // Lấy phần tử cha của phần tử <input>
+            let parentTd = event.target.closest('td.qty');
+            console.log('Parent TD:', parentTd);
+
+            // Lấy giá trị của phần tử <input>
+            let inputValue = parseInt(event.target.value);
+            console.log('Input value:', inputValue);
+
+            // Lấy phần tử anh em đầu tiên của phần tử cha (chứa giá cả) 
+            let priceElement = parentTd.previousElementSibling.querySelector('span');
+            let priceValue = parseFloat(priceElement.textContent.replace('đ', '').replace(',', '.'));
+            console.log('Price value:', priceValue);
+
+            // Tính toán tổng mới và cập nhật vào cột "Total"
+            let totalAmountElement = parentTd.nextElementSibling.querySelector('span');
+            let newTotal = inputValue * priceValue;
+            totalAmountElement.textContent = newTotal.toFixed(5) + 'đ';
+            console.log(totalAmountElement);
+        }
+        var a = document.getElementById('total-amount');
+        console.log(a);
+    });
+</script>

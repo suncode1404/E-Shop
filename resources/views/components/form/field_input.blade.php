@@ -15,8 +15,8 @@
     }
 @endphp
 
-<div class="form-floating mb-3">
-    <input type="{{ $type }}" class="form-control @error($name) is-invalid @enderror" name="{{ $name }}"
+<div class="form-floating my-3">
+    <input type="{{ $type }}" class="form-control @error($name) is-invalid @enderror {{ $attributes['class'] }}" {{ $attributes->except('class') }} name="{{ $name }}"
         id="{{ $name }}" value="{{$value}}">
     <label for="{{ $name }}" class="form-label">{{ $slot }}</label>
     @if ($error === 'true')

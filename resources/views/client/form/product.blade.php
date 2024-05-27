@@ -67,17 +67,18 @@
                             <div class="quickview-peragraph">
                                 <p id="description">{{ $product->description }}</p>
                             </div>
-                            <form action="{{route('client.cart.addProduct',$product->id)}}" method="POST">
+                            <form action="{{ route('client.cart.addProduct', $product->id) }}" method="POST">
                                 @csrf
                                 {{-- Quantity --}}
-                                <x-function.incr-des_button nameInput="quantity_available"
-                                    defaultValue="{{ $product->quantity_available }}">
-    
-                                </x-function.incr-des_button>
-                                <div class="add-to-cart">
-                                    <button type="submit" class="btn">Add to cart</button>
-                                    <a href="#" class="btn min"><i class="ti-heart"></i></a>
-                                    <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <x-form.field_input type="number" name="quantity_available" error="false"
+                                        min="1" max="{{ $product->quantity_available }}" value="1">
+                                    </x-form.field_input>
+                                    <div class="add-to-cart mx-2">
+                                        <button type="submit" class="btn">Add to cart</button>
+                                        <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                                        <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                                    </div>
                                 </div>
                             </form>
                             <div class="default-social">
@@ -377,9 +378,9 @@
         //     // Initialize the button states
         //     updateButtons();
         // }
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     initThumbnailClickEvent();
-        //     initializeQuantityControls('.quantity');
-        // });
+        document.addEventListener('DOMContentLoaded', function() {
+            initThumbnailClickEvent();
+            // initializeQuantityControls('.quantity');
+        });
     </script>
 @endsection
