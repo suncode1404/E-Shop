@@ -9,41 +9,61 @@
 
     <!-- Start Checkout -->
     <section class="shop checkout section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-12">
-                    <div class="checkout-form">
-                        <h2 class="my-2">Hãy thanh toán ở đây</h2>
-                        <!-- Form -->
-                        <form class="form" method="post" action="#">
+        <form class="form" action="{{ route('client.cart.payment') }}" method="POST">
+            @csrf
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-12">
+                        <div class="checkout-form">
+                            <h2 class="my-2">Hãy thanh toán ở đây</h2>
+                            <!-- Form -->
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Tên<span>*</span></label>
-                                        <input type="text" name="name" value="{{ $user->name }}">
+                                        <input type="text" name="name" value="{{ old('name', $user->name) }}">
+                                        @error('name')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Email<span>*</span></label>
-                                        <input type="text" name="email" value="{{ $user->email }}">
+                                        <input type="text" name="email" value="{{ old('email', $user->email) }}"
+                                            readonly>
+                                        @error('email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Địa chỉ<span>*</span></label>
-                                        <input type="text" name="address" value="{{ $user->address }}">
+                                        <input type="text" name="address" value="{{ old('address', $user->address) }}">
+                                        @error('address')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Số điện thoại<span>*</span></label>
-                                        <input type="text" name="phone" value="{{ $user->phone }}">
+                                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}">
+                                        @error('phone')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <?php $totalPay = 0; ?>
-                                    @foreach (session('cart' . Auth::id()) as $key => $item)
+                                    <div class="form-group">
+                                        <label>Ghi chú </label>
+                                        <input type="text" name="customer_notes" value="{{ old('customer_notes') }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <?php $totalPay = 0;  $quantity=0;?>
+                                    @foreach ($cartItems as $key => $item)
                                         <div class="card mb-3">
                                             <div class="row g-0">
                                                 <div class="col-md-4">
@@ -61,61 +81,65 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php $totalPay += $item->product->price * $item->quantity; ?>
+                                        <?php
+                                            $totalPay += $item->product->price * $item->quantity;
+                                            $quantity += $item->quantity;
+                                        ?>
                                     @endforeach
                                 </div>
                             </div>
-                        </form>
-                        <!--/ End Form -->
+                            <!--/ End Form -->
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                    <div class="order-details">
-                        <!-- Order Widget -->
-                        <div class="single-widget">
-                            <h2>Tổng giỏ hàng</h2>
-                            <div class="content">
-                                <ul>
-                                    <li>Sub Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span></li>
-                                    <li>(+) Shipping<span>$10.00</span></li>
-                                    <li class="last">Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!--/ End Order Widget -->
-                        <!-- Order Widget -->
-                        <div class="single-widget">
-                            <h2>Thanh toán</h2>
-                            <div class="content">
-                                <div class="checkbox">
-                                    <label class="checkbox-inline" for="2"><input name="news" id="2"
-                                            type="checkbox">Thanh toán tiền mặt</label>
-                                    <label class="checkbox-inline" for="3"><input name="news" id="3"
-                                            type="checkbox"> PayPal</label>
+                    <div class="col-lg-4 col-12">
+                        <div class="order-details">
+                            <!-- Order Widget -->
+                            <div class="single-widget">
+                                <h2>Tổng giỏ hàng</h2>
+                                <div class="content">
+                                    <ul>
+                                        <li>Sub Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span></li>
+                                        <li>(+) Shipping<span>00đ</span></li>
+                                        <li class="last">Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                        </li>
+                                        <input type="hidden" name="total_price" value="{{ $totalPay }}">
+                                        <input type="hidden" name="quantity" value="{{ $quantity }}">
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                        <!--/ End Order Widget -->
-                        <!-- Payment Method Widget -->
-                        <div class="single-widget payement">
-                            <div class="content">
-                                <img src="{{ asset('images/payment-method.png') }}" alt="#">
-                            </div>
-                        </div>
-                        <!--/ End Payment Method Widget -->
-                        <!-- Button Widget -->
-                        <div class="single-widget get-button">
-                            <div class="content">
-                                <div class="button">
-                                    <a href="{{route('client.cart.payment')}}" class="btn">Xác nhận thanh toán</a>
+                            <!--/ End Order Widget -->
+                            <!-- Order Widget -->
+                            <div class="single-widget">
+                                <h2>Thanh toán</h2>
+                                <div class="content d-flex flex-column p-4">
+                                    @foreach ($payments as $pay)
+                                        <label><input type="radio" name="payment"
+                                                value="{{ $pay->id }}">{{ $pay->name }}</label>
+                                    @endforeach
                                 </div>
                             </div>
+                            <!--/ End Order Widget -->
+                            <!-- Payment Method Widget -->
+                            <div class="single-widget payement">
+                                <div class="content">
+                                    <img src="{{ asset('images/payment-method.png') }}" alt="#">
+                                </div>
+                            </div>
+                            <!--/ End Payment Method Widget -->
+                            <!-- Button Widget -->
+                            <div class="single-widget get-button">
+                                <div class="content">
+                                    <div class="button">
+                                        <button type="submit" class="btn">Xác nhận thanh toán</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ End Button Widget -->
                         </div>
-                        <!--/ End Button Widget -->
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </section>
     <!--/ End Checkout -->
 

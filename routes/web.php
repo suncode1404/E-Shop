@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\QuantityController;
 use App\Models\Categories;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +50,18 @@ Route::group(['middleware' => ['users']], function () {
     Route::post('/cart/addProduct/{id}', [CartController::class, 'addProduct'])->name('client.cart.addProduct');
     Route::get('/cart/logout/{id}', [CartController::class, 'logout'])->name('client.cart.logout');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('client.checkout');
-    Route::get('/car/payment',[CartController::class, 'payment'])->name('client.cart.payment');
+    Route::post('/car/payment', [CartController::class, 'payment'])->name('client.cart.payment');
+    Route::post('/update-quantity', [QuantityController::class, 'update'])->name('quantity.update');
+    //Đơn hàng
+    Route::get('/order', [OrderController::class, 'order'])->name('client.order');
+    //Hủy đơn hàng
+    Route::get('/order/{id}/cancel', [OrderController::class, 'cancelOrder'])->name('client.order.cancel');
+    Route::get('/order/detail/{id}', [OrderController::class, 'order_detail'])->name('client.order.detail');
+    //Bình luận
+    Route::post('/luubinhluan', [ProductController::class, 'luubinhluan'])->name('client.binhluan');
+    Route::post('/upload', [ProductController::class, 'upload'])->name('ckeditor.upload');
 });
-Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');
+Route::group(['middleware' => ['admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('admin/user', UserController::class);
+});

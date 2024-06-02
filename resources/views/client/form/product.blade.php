@@ -1,5 +1,79 @@
 @extends('client.layout')
 @section('title', 'Sản phẩm')
+@push('css')
+    <style>
+        .review-summary {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review-summary h2 {
+            margin: 0;
+        }
+
+        .review-summary .rating-breakdown {
+            margin-top: 10px;
+        }
+
+        .review-summary .rating-breakdown div {
+            display: flex;
+            align-items: center;
+        }
+
+        .review-summary .rating-breakdown div span {
+            margin-left: 5px;
+        }
+
+        .review-list .review-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .review-list .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-list .review-item .reviewer-info {
+            font-weight: bold;
+        }
+
+        .review-list .review-item .reviewer-info .verified {
+            color: green;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .review-list .review-item .review-date {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .review-list .review-item .review-actions {
+            font-size: 0.9rem;
+        }
+
+        .review-list .review-item .review-actions a {
+            margin-right: 10px;
+        }
+
+        .review-list .reply {
+            margin-top: 10px;
+            margin-left: 30px;
+            border-left: 2px solid #ddd;
+            padding-left: 10px;
+        }
+
+        .review-list .review-item img,
+        .review-list .reply img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+@endpush
 @section('content')
     <!-- Breadcrumbs -->
     <x-layout.breadcrumb :title="$product->name">
@@ -237,33 +311,74 @@
             </div>
         </div>
     </div>
-
+    {{-- Bình luận --}}
+    <div class="container my-5">
+        <div class="review-summary">
+            <h2>Đánh giá sản phẩm</h2>
+            <form class="py-3" method="post" action="{{ route('client.binhluan') }}">
+                <p>
+                    <textarea class="form-control shadow-none fs-5" name="content" id="editor" rows="4"
+                        placeholder="Mời nhập bình luận"></textarea>
+                </p>
+                <p class="text-end"> @csrf
+                    <input type="hidden" name="id_sp" value="{{ $product->id }}">
+                    <button type="submit" class="btn mt-3">Gửi đánh giá</button>
+                <p>
+            </form>
+        </div>
+        <div class="review-list">
+            <div class="review-item">
+                @foreach ($binhluan as $bl)
+                    <div class="d-flex align-items-start">
+                        <img src="https://via.placeholder.com/50" alt="User image">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <div class="reviewer-info">
+                                    <span>{{ $bl->user->name }}</span> <span class="verified">Đã mua tại E-Shop</span>
+                                </div>
+                            </div>
+                            <div class="review-date">Ngày
+                                {{ gmdate('d/m/Y H:m:s', strtotime($bl->created_at) + 3600 * 7) }}
+                            </div>
+                            <div class="review-content">{!! $bl->content !!}</div>
+                            <div class="review-actions">
+                                <a href="#">Thích (8)</a>
+                                <a href="#">Trả lời</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                @endforeach
+            </div>
+            <!-- Repeat the above structure for other reviews -->
+        </div>
+    </div>
     <!-- Start Most Popular -->
     <div class="product-area most-popular section">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Sản phẩm Hot</h2>
+                        <h2>Sản phẩm liên quan</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="owl-carousel popular-slider">
-                        @foreach ($productHot as $key => $pdH)
+                        @foreach ($productRelated as $key => $pdH)
                             <!-- Start Single Product -->
                             <div class="single-product">
                                 <div class="product-img">
                                     <a href="{{ route('client.product', $pdH->id) }}">
                                         <img class="default-img" src="{{ asset('images/' . $pdH->image) }}"
                                             alt="#">
-                                        <span class="out-of-stock">Hot</span>
+                                        {{-- <span class="out-of-stock">Hot</span>   --}}
                                     </a>
                                     <div class="button-head">
                                         <div class="product-action">
                                             <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-                                                data-productName="productHot" data-productId="{{ $key }}"><i
+                                                data-productName="productRelated" data-productId="{{ $key }}"><i
                                                     class=" ti-eye"></i><span>Xem
                                                     nhanh sản
                                                     phẩm</span></a>
@@ -273,7 +388,8 @@
                                                     Compare</span></a>
                                         </div>
                                         <div class="product-action-2">
-                                            <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
+                                            <a title="Add to cart" href="{{ route('client.cart.add', $pdH->id) }}">Thêm
+                                                vào giỏ hàng</a>
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +397,7 @@
                                     <h3><a href="{{ route('client.product', $pdH->id) }}">{{ $pdH->name }}</a></h3>
                                     <div class="product-price">
                                         {{-- <span class="old">{{$pdH->price}}</span> --}}
-                                        <span>{{ number_format($pdH->price, 2, ',', ',') }}đ</span>
+                                        <span>{{ number_format($pdH->price, 0, ',', ',') }}đ</span>
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +411,7 @@
     <!-- End Most Popular Area -->
     @php
         $products = [
-            'productHot' => $productHot,
+            'productRelated' => $productRelated,
         ];
     @endphp
 
@@ -305,6 +421,16 @@
     </x-layout.formModal>
 
     <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                ckfinder: {
+                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+
         function initThumbnailClickEvent() {
             const mainImage = document.getElementById('mainImage');
             const thumbnails = document.querySelectorAll('.thumbnail');
@@ -317,70 +443,8 @@
                 });
             });
         }
-
-        // function initializeQuantityControls(containerSelector) {
-        //     const container = document.querySelector(containerSelector);
-        //     if (!container) {
-        //         console.error(`Container not found: ${containerSelector}`);
-        //         return;
-        //     }
-
-        //     const minusButton = container.querySelector('.button.minus button');
-        //     const plusButton = container.querySelector('.button.plus button');
-        //     const input = container.querySelector('.input-number');
-        //     const min = parseInt(input.getAttribute('data-min'));
-        //     const max = parseInt(input.getAttribute('data-max'));
-
-        //     function updateButtons() {
-        //         const value = parseInt(input.value);
-        //         minusButton.disabled = (value <= min);
-        //         plusButton.disabled = (value >= max);
-        //     }
-
-        //     minusButton.addEventListener('click', function() {
-        //         let value = parseInt(input.value);
-        //         if (value > min) {
-        //             value--;
-        //             input.value = value;
-        //             updateButtons();
-        //         }
-        //     });
-
-        //     plusButton.addEventListener('click', function() {
-        //         let value = parseInt(input.value);
-        //         if (value < max) {
-        //             value++;
-        //             input.value = value;
-        //             updateButtons();
-        //         }
-        //     });
-
-        //     input.addEventListener('input', function() {
-        //         let value = parseInt(input.value);
-        //         if (isNaN(value) || value < min) {
-        //             input.value = min;
-        //         } else if (value > max) {
-        //             input.value = max;
-        //         }
-        //         updateButtons();
-        //     });
-
-        //     input.addEventListener('blur', function() {
-        //         let value = parseInt(input.value);
-        //         if (isNaN(value) || value < min) {
-        //             input.value = min;
-        //         } else if (value > max) {
-        //             input.value = max;
-        //         }
-        //         updateButtons();
-        //     });
-
-        //     // Initialize the button states
-        //     updateButtons();
-        // }
         document.addEventListener('DOMContentLoaded', function() {
             initThumbnailClickEvent();
-            // initializeQuantityControls('.quantity');
         });
     </script>
 @endsection

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('description');
             $table->mediumText('short_description')->nullable();
             $table->integer('quantity_available')->comment('số lượng có sẵn');
-            $table->decimal('price', 8, 2);
+            $table->integer('price');
             $table->string('image');
             $table->boolean('hot')->default(0)->comment('0 là bình thường, 1 là hot');
             $table->integer('heart')->default(0)->comment('Số lượng tim sản phẩm');

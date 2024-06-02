@@ -70,21 +70,30 @@
                                                          alt="#"></a>
                                                  <h4><a href="#">{{ $sp->product->name }}</a></h4>
                                                  <p class="quantity">{{ $sp['quantity'] }} - <span
-                                                         class="amount">{{ number_format($sp['price'], 2, '.', '.') }}vnđ</span>
+                                                         class="amount">{{ number_format($sp['price'], 0, '.', '.') }}vnđ</span>
                                                  </p>
-                                                 <?php $totalAmount += $sp['quantity'] * $sp['price']; ?>
+                                                 <?php $totalAmount += $sp['total_price']; ?>
                                              </li>
                                          @endforeach
                                      @endif
                                  </ul>
-                                 <div class="bottom">
-                                     <div class="total">
-                                         <span>Total</span>
-                                         <span
-                                             class="total-amount">{{ number_format($totalAmount, 2, '.', '.') }}vnđ</span>
+                                 @if (!empty(session('cart' . Auth::id())))
+                                     @if (sizeof(session('cart' . Auth::id())) > 0)
+                                         <div class="bottom">
+                                             <div class="total">
+                                                 <span>Total</span>
+                                                 <span
+                                                     class="total-amount">{{ number_format($totalAmount, 0, '.', '.') }}vnđ</span>
+                                             </div>
+                                             <a href="{{ route('client.checkout') }}" class="btn animate">Thanh
+                                                 toán</a>
+                                         </div>
+                                     @endif
+                                 @else
+                                     <div class="bottom">
+                                         <a href="{{ route('client.shop') }}" class="btn animate">Mua hàng</a>
                                      </div>
-                                     <a href="{{ route('client.checkout') }}" class="btn animate">Thanh toán</a>
-                                 </div>
+                                 @endif
                              </div>
                              <!--/ End Shopping Item -->
                          </div>
@@ -100,6 +109,9 @@
                                  <div class="shopping-item">
                                      <ul class="shopping-list">
                                          <li>Thông tin tài khoản</li>
+                                         <li>
+                                             <a href="{{ route('client.order') }}">Thông tin đơn hàng</a>
+                                         </li>
                                          <li>Đổi mặt khẩu</li>
                                      </ul>
                                      <div class="bottom">
@@ -130,7 +142,8 @@
                              <ul class="main-category">
                                  {{-- Categrory --}}
                                  @foreach ($categories as $cg)
-                                     <li><a href="#">{{ $cg->name }}</a></li>
+                                     <li><a href="{{ route('client.shop.related', $cg->id) }}">{{ $cg->name }}</a>
+                                     </li>
                                  @endforeach
                              </ul>
                          </div>

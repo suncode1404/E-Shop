@@ -125,7 +125,7 @@
                                                                 href="{{ route('client.product', $pd->id) }}">{{ $pd->name }}</a>
                                                         </h3>
                                                         <div class="product-price">
-                                                            <span>{{ number_format($pd->price, 2, ',', ',') }}đ</span>
+                                                            <span>{{ number_format($pd->price, 0, ',', ',') }}đ</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -185,7 +185,7 @@
                         <h2>Sản phẩm HOT</h2>
                     </div>
                 </div>
-            </div>
+            </div>  
             <div class="row">
                 <div class="col-12">
                     <div class="owl-carousel popular-slider">
@@ -219,7 +219,7 @@
                                     <h3><a href="{{ route('client.product', $pdH->id) }}">{{ $pdH->name }}</a></h3>
                                     <div class="product-price">
                                         {{-- <span class="old">{{$pdH->price}}</span> --}}
-                                        <span>{{ number_format($pd->price, 2, ',', ',') }}đ</span>
+                                        <span>{{ number_format($pd->price, 0, ',', ',') }}đ</span>
                                     </div>
                                 </div>
                             </div>

@@ -20,11 +20,15 @@ return new class extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('status_id')->constrained('status');
+            $table->foreignId('status_id')->constrained('status')->default(1);
             $table->foreignId('payment_id')->constrained('order_payment');
-            $table->integer('amount');
-            $table->integer('pay_amout');
-            $table->string('customer_notes',255);
+            $table->integer('quantity');
+            $table->integer('total_price');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->text('address');
+            $table->string('customer_notes',255)->nullable();
             $table->timestamps();
         });
     }

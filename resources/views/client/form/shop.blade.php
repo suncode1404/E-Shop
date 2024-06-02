@@ -18,7 +18,9 @@
                             <h3 class="title">Danh mục</h3>
                             <ul class="categor-list">
                                 @foreach ($categories as $cg)
-                                    <li><a href="{{route('client.shop.related',$cg->id)}}">{{$cg->name}}</a></li>
+                                    <li><a href="{{ route('client.shop.related', $cg->id) }}"
+                                            class="{{ $cg->id == $id ? 'text-primary' : '' }}">{{ $cg->name }}</a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -111,7 +113,8 @@
                                                         Compare</span></a>
                                             </div>
                                             <div class="product-action-2">
-                                                <a title="Add to cart" href="{{route('client.cart.add',$pd->id)}}">Thêm vào giỏ
+                                                <a title="Add to cart" href="{{ route('client.cart.add', $pd->id) }}">Thêm
+                                                    vào giỏ
                                                     hàng</a>
                                             </div>
                                         </div>

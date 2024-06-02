@@ -132,8 +132,9 @@
                     price.innerHTML = formattedNumber + "đ";
                         imgAll.forEach((img, index, array) => {
                             img.src = window.location.origin+'/images/'+imgText
-                            console.log(img);
+                            // console.log(img);
                         })
+                    console.log(name);
                 }
 
             }

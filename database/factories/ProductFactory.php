@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'category_id' => Categories::inRandomOrder()->first()->id,
             'description' => fake()->text,
             'quantity_available' => fake()->numberBetween(1,1000),
-            'price' => fake()->randomFloat(2, 500, 2000),
+            'price' => fake()->numberBetween(500000, 100000000),
             'image' => fake()->randomElement(['product_1.webp','product_2.webp']),
             'heart' => fake()->numberBetween(0,2147483647),
             'hot' => fake()->numberBetween(0,1),

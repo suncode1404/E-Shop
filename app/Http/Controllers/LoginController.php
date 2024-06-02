@@ -56,16 +56,14 @@ class LoginController extends Controller
         $user->phone = $request->phone;
         $user->address = $request->address;
         $user->password = bcrypt($request->password);
-        $user->role = 'user';
         $user->save();
         toast('Bạn đã đăng ký tài khoản thành công', 'success');
         return redirect()->route('account.login');
     }
     public function logout(Request $request)
     {
-        // dd(Auth::user());
         Auth::logout();
-        $request->session()->flush();
+        // $request->session()->flush();
         return redirect()->route('account.login');
     }
 }

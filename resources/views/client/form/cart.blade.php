@@ -1,5 +1,8 @@
 @extends('client.layout')
 @section('title', 'Giỏ hàng')
+@push('css')
+    <script src="{{ asset('ajax/quantity.js') }}"></script>
+@endpush
 @section('content')
     <!-- Breadcrumbs -->
     <x-layout.breadcrumb :title="$title"></x-layout.breadcrumb>
@@ -14,6 +17,7 @@
                     <table class="table shopping-summery">
                         <thead>
                             <tr class="main-hading">
+                                <th>#ID</th>
                                 <th>ẢNH</th>
                                 <th>TÊN</th>
                                 <th class="text-center">GIÁ</th>
@@ -25,35 +29,55 @@
                         <tbody>
                             {{-- {{dd($cartItemAll)}} --}}
                             <?php $totalPay = 0; ?>
-                            @foreach ($cartItemAll as $key => $item)
-                                <tr>
-                                    <td class="image" data-title="No"><img class="image-fluid"
-                                            src="{{ asset('images/' . $item->product->image) }}" alt="#"></td>
-                                    <td class="product-des" data-title="Description">
-                                        <p class="product-name"><a
-                                                href="{{ route('client.product', $item->product->id) }}">{{ $item->product->name }}</a>
-                                        </p>
-                                        <p class="product-des">{{ $item->product->short_description }}</p>
-                                    </td>
-                                    <td class="price" data-title="Price">
-                                        <span>{{ number_format($item->product->price, 2, '.', '.') }}đ</span>
-                                    </td>
-                                    <td class="qty" data-title="Qty">
-                                        {{-- Quantity --}}
-                                        <x-form.field_input type="number" name="quantity_available" error="false"
-                                            min="1" max="{{ $item->product->quantity_available }}"
-                                            value="{{ $item->quantity }}">
-                                        </x-form.field_input>
-                                    </td>
-                                    <td class="total-amount" id="total-amount" data-title="Total">
-                                        <span>{{ number_format($item->product->price * $item->quantity, 2, '.', '.') }}đ</span>
-                                    </td>
-                                    <td class="action" data-title="Remove"><a
-                                            href="{{ route('client.cart.logout', $key) }}"><i
-                                                class="ti-trash remove-icon"></i></a></td>
-                                    <?php $totalPay += $item->product->price * $item->quantity; ?>
-                                </tr>
-                            @endforeach
+                            @if (is_array(session('cart' . Auth::id())) || is_object(session('cart' . Auth::id())))
+                                @foreach ($cartItemAll as $key => $item)
+                                    <tr>
+                                        <td class="id" data-id="Id">
+                                            {{$item->id}}
+                                        </td>
+                                        <td class="image" data-title="No"><img class="image-fluid"
+                                                src="{{ asset('images/' . $item->product->image) }}" alt="#"></td>
+                                        <td class="product-des" data-title="Description">
+                                            <p class="product-name"><a
+                                                    href="{{ route('client.product', $item->product->id) }}">{{ $item->product->name }}</a>
+                                            </p>
+                                            <p class="product-des">{{ $item->product->short_description }}</p>
+                                        </td>
+                                        <td class="price" data-title="Price">
+                                            <span>{{ number_format($item->product->price, 0, '.', '.') }}đ</span>
+                                        </td>
+                                        <td class="qty" data-title="Qty">
+                                            <div class="quantity">
+                                                <!-- Input Order -->
+                                                <div class="input-group">
+                                                    <div class="button minus">
+                                                        <button type="button" class="btn btn-primary btn-number"
+                                                            data-type="minus" data-field="quant[1]">
+                                                            <i class="ti-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="number" name="quant[1]" class="input-number" min="1"
+                                                        data-min="1" data-max="{{$item->product->quantity_available}}" value="{{$item->quantity}}">
+                                                    <div class="button plus">
+                                                        <button type="button" class="btn btn-primary btn-number"
+                                                            data-type="plus" data-field="quant[1]">
+                                                            <i class="ti-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!--/ End Input Order -->
+                                            </div>
+                                        </td>
+                                        <td class="total-amount" id="total-amount" data-title="Total">
+                                            <span>{{ number_format($item->total_price, 0, '.', '.') }}đ</span>
+                                        </td>
+                                        <td class="action" data-title="Remove"><a
+                                                href="{{ route('client.cart.logout', $key) }}"><i
+                                                    class="ti-trash remove-icon"></i></a></td>
+                                        <?php $totalPay += $item->total_price; ?>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     <!--/ End Shopping Summery -->
@@ -82,11 +106,11 @@
                                 <div class="right">
                                     <ul>
                                         <li id="cartsubtotal">Cart
-                                            Subtotal<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                            Subtotal<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span>
                                         </li>
                                         <li>Shipping<span></span></li>
                                         <li>You Save<span></span></li>
-                                        <li class="last">You Pay<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                        <li class="last" id="carttotal">You Pay<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span>
                                         </li>
                                     </ul>
                                     <div class="button5">
@@ -164,13 +188,15 @@
 
             // Lấy phần tử anh em đầu tiên của phần tử cha (chứa giá cả) 
             let priceElement = parentTd.previousElementSibling.querySelector('span');
-            let priceValue = parseFloat(priceElement.textContent.replace('đ', '').replace(',', '.'));
-            console.log('Price value:', priceValue);
+            // let priceValue = parseFloat(priceElement.textContent.replace('đ', '').replace(',', '.'));
+            let priceValue = priceElement.textContent.replace('đ', '');
+            console.log('Price value:', Number(priceElement.textContent.replace('đ', '')));
 
             // Tính toán tổng mới và cập nhật vào cột "Total"
             let totalAmountElement = parentTd.nextElementSibling.querySelector('span');
             let newTotal = inputValue * priceValue;
-            totalAmountElement.textContent = newTotal.toFixed(5) + 'đ';
+            console.log(newTotal);
+            totalAmountElement.textContent = newTotal.toLocaleString('en-US') + 'đ';
             console.log(totalAmountElement);
         }
         var a = document.getElementById('total-amount');

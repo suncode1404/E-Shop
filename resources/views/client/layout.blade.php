@@ -3,6 +3,7 @@
 
 <head>
     <!-- Meta Tag -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name='copyright' content=''>
@@ -18,6 +19,7 @@
         rel="stylesheet">
 
     <!-- StyleSheet -->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     @stack('css')
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
@@ -71,7 +73,6 @@
     @include('client.footer')
 
     <!-- Jquery -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 

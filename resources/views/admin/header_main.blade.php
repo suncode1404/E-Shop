@@ -1,47 +1,46 @@
 <div class="col-md-2 d-none d-md-none d-lg-block shadow p-3 bg-body rounded">
     <div class="m-3 aside">
         <div class="aside-header m-4">
-            <img src="{{asset('images/logo.png')}}" alt="" class="img-fluid">
+            <img src="{{ asset('images/logo.png') }}" alt="" class="img-fluid">
             {{-- <h5 class="aside-title" id="asideExampleLabel">Ảnh logo</h5> --}}
         </div>
         <div class="aside-body">
             <div>
                 <!-- Dashbroad -->
                 <div class="list-group list-group-flush Dashbroad">
-                    <button type="button"
-                        class="list-group-item list-group-item d-flex justify-content-between border border-0 py-3"
-                        aria-current="true" data-bs-toggle="collapse" href="#Dashbroad" role="button"
-                        aria-expanded="false" aria-controls="Dashbroad">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="list-group-item list-group-item d-flex justify-content-between border border-0 py-3">
                         <div class="fw-medium">
                             <i class="bi bi-house-door pe-2"></i>Dashbroad
                         </div>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                    <div class="collapse" id="Dashbroad">
+                    </a>
+                    {{-- <div class="collapse" id="Dashbroad">
                         <div class="list-group list-group-flush ">
                             <div class="list-group-item border border-0 py-3 px-4 ">Thống kê doanh thu tháng
                             </div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu ngày</div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
 
-                <!-- Vender -->
-                <div class="list-group list-group-flush Vender">
+                <!-- user -->
+                <div class="list-group list-group-flush User">
                     <button type="button"
                         class="list-group-item list-group-item d-flex justify-content-between border border-0 py-3"
-                        aria-current="true" data-bs-toggle="collapse" href="#Vender" role="button"
-                        aria-expanded="false" aria-controls="Vender">
+                        aria-current="true" data-bs-toggle="collapse" href="#User" role="button"
+                        aria-expanded="false" aria-controls="User">
                         <div class="fw-medium">
-                            <i class="bi bi-shop-window pe-2"></i>Thống kê vender
+                            <i class="bi bi-people"></i></i>Quản lý tài khoản
                         </div>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="collapse" id="Vender">
+                    <div class="collapse" id="User">
                         <div class="list-group list-group-flush ">
-                            <div class="list-group-item border border-0 py-3 px-4 ">Thống kê doanh thu tháng
+                            <div class="list-group-item border border-0 py-3 px-4 ">
+                                <a href="{{ route('admin.user.index') }}" class="text-decoration-none text-black">Danh
+                                    sách tài khoản</a>
                             </div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu ngày</div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>
@@ -127,12 +126,12 @@
             <div class="position-absolute top-50 end-0 translate-middle-y px-3">
                 <div class="user img-fluid">
                     <div class="dropdown">
-                        <img src="{{asset('images/user.png')}}" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            class="img-fluid rounded-circle">
+                        <img src="{{ asset('images/user.png') }}" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" class="img-fluid rounded-circle">
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
                             <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="{{route('account.logout')}}">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="{{ route('account.logout') }}">Đăng xuất</a></li>
                         </ul>
                     </div>
 

@@ -21,14 +21,17 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Lấy ID của user từ route
+        $userId = $this->route('user'); // 'user' là tên của parameter trong route
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,'.$userId,
             'password' => 'required|confirmed',
             'phone' => 'required|regex:/^0\d{9}$/'
         ];
     }
-    public function messages() {
+    public function messages()
+    {
         return [
             'name.required' => 'Tên không được để trống',
             'email.required' => 'Email không được để trống',
