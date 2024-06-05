@@ -92,7 +92,7 @@
                         <div class="product-details-tab">
                             <div id="img-1" class="zoomWrapper single-zoom">
                                 <a href="#" class="d-flex justify-content-center">
-                                    <img id="mainImage" src="{{ asset('images/' . $product->image) }}"
+                                    <img id="mainImage" src="{{ asset('images/product/' . $product->image) }}"
                                         class="img-main_product">
                                 </a>
                             </div>
@@ -100,16 +100,16 @@
                             <div class="thumbnail-container">
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-md-3 col-sm-4">
-                                        <img src="{{ asset('images/product_1.webp') }}" class="img-fluid thumbnail">
+                                        <img src="{{ asset('images/product/product_1.webp') }}" class="img-fluid thumbnail">
                                     </div>
                                     <div class="col-md-3 col-sm-4">
-                                        <img src="{{ asset('images/' . $product->image) }}" class="img-fluid thumbnail">
+                                        <img src="{{ asset('images/product/' . $product->image) }}" class="img-fluid thumbnail">
                                     </div>
                                     <div class="col-md-3 col-sm-4">
-                                        <img src="{{ asset('images/' . $product->image) }}" class="img-fluid thumbnail">
+                                        <img src="{{ asset('images/product/' . $product->image) }}" class="img-fluid thumbnail">
                                     </div>
                                     <div class="col-md-3 col-sm-4">
-                                        <img src="{{ asset('images/' . $product->image) }}" class="img-fluid thumbnail">
+                                        <img src="{{ asset('images/product/' . $product->image) }}" class="img-fluid thumbnail">
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                             </div>
                             <h3 id="price">{{ number_format($product->price, 2, '.', '.') }}đ</h3>
                             <div class="quickview-peragraph">
-                                <p id="description">{{ $product->description }}</p>
+                                <p id="description">{{ $product->short_description }}</p>
                             </div>
                             <form action="{{ route('client.cart.addProduct', $product->id) }}" method="POST">
                                 @csrf
@@ -196,7 +196,7 @@
                 <div class="tab-pane fade active show" id="description" role="tabpanel">
                     <div class="tab-single">
                         <div class="quickview-peragraph">
-                            <p id="description">{{ $product->description }}</p>
+                            <p id="description">{!! $product->description !!}</p>
                         </div>
                     </div>
                 </div>
@@ -211,35 +211,23 @@
                             </tr>
                             <tr>
                                 <td>CPU</td>
-                                <td>Intel, Core i5, 12450HX</td>
+                                <td>{{$product_specification->cpu}}</td>
                             </tr>
                             <tr>
                                 <td>RAM</td>
-                                <td>16 GB (2 thanh 8 GB), DDR5, 4800 MHz</td>
+                                <td>{{$product_specification->ram}}</td>
                             </tr>
                             <tr>
                                 <td>Ổ cứng</td>
                                 <td>SSD 512 GB</td>
                             </tr>
                             <tr>
-                                <td>Đồ họa</td>
-                                <td>NVIDIA GeForce RTX 2050 4GB GDDR6</td>
-                            </tr>
-                            <tr>
-                                <td>Hệ điều hành</td>
-                                <td>Windows 11 Home Single Language (ColorOS 13.1)Windows 11 Home Single Language</td>
+                                <td>Màu sắc</td>
+                                <td>{{$product_specification->mau_sac}}</td>
                             </tr>
                             <tr>
                                 <td>Trọng lượng</td>
-                                <td>2.38 kg</td>
-                            </tr>
-                            <tr>
-                                <td>Kích thước</td>
-                                <td>359.86 x 258.7 x 21.9-23.9 mm</td>
-                            </tr>
-                            <tr>
-                                <td>Xuất xứ</td>
-                                <td>Trung Quốc</td>
+                                <td>{{$product_specification->can_nang}}kg</td>
                             </tr>
                             <tr>
                                 <td>Năm ra mắt</td>
@@ -371,7 +359,7 @@
                             <div class="single-product">
                                 <div class="product-img">
                                     <a href="{{ route('client.product', $pdH->id) }}">
-                                        <img class="default-img" src="{{ asset('images/' . $pdH->image) }}"
+                                        <img class="default-img" src="{{ asset('images/product/' . $pdH->image) }}"
                                             alt="#">
                                         {{-- <span class="out-of-stock">Hot</span>   --}}
                                     </a>

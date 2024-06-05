@@ -98,7 +98,7 @@
                                                     <div class="product-img">
                                                         <a href="{{ route('client.product', $pd->id) }}">
                                                             <img class="default-img"
-                                                                src="{{ asset('images/' . $pd->image) }}" alt="#">
+                                                                src="{{ asset('images/product/' . $pd->image) }}" alt="#">
                                                         </a>
                                                         <div class="button-head">
                                                             <div class="product-action">
@@ -194,7 +194,7 @@
                             <div class="single-product">
                                 <div class="product-img">
                                     <a href="{{ route('client.product', $pdH->id) }}">
-                                        <img class="default-img" src="{{ asset('images/' . $pdH->image) }}"
+                                        <img class="default-img" src="{{ asset('images/product/' . $pdH->image) }}"
                                             alt="#">
                                         <span class="out-of-stock">Hot</span>
                                     </a>

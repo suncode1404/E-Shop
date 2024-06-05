@@ -28,4 +28,15 @@ class OrderRequest extends FormRequest
             'phone' => 'required|regex:/^0\d{9}$/'
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Bạn chưa nhập nhập tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'Email nhập chưa đúng định dạng',
+            'address.required' => 'Bạn chưa nhập địa chỉ giao hàng',
+            'phone.required' => 'Bạn chưa nhập số điện thoại',
+            'phone.regex' => 'Số điện thoại không đúng định dạng',
+        ];
+    }
 }

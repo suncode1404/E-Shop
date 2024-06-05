@@ -9,7 +9,7 @@
     @endphp
     <a href="{{ route('admin.user.index') }}">Quay lại</a>
     <div class="card-body">
-        <div class="fs-4 my-2">người dùng </div>
+        <div class="fs-4 my-2">{{$title}} người dùng </div>
         <form method="POST" action="{{ $route }}">
             @csrf
             @method($method)

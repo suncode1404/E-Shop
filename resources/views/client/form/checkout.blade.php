@@ -21,7 +21,8 @@
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Tên<span>*</span></label>
-                                        <input type="text" name="name" value="{{ old('name', $user->name) }}">
+                                        <input type="text" name="name"
+                                            value="{{ old('name', $user->name) }}">
                                         @error('name')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -62,12 +63,13 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <?php $totalPay = 0;  $quantity=0;?>
+                                    <?php $totalPay = 0;
+                                    $quantity = 0; ?>
                                     @foreach ($cartItems as $key => $item)
                                         <div class="card mb-3">
                                             <div class="row g-0">
                                                 <div class="col-md-4">
-                                                    <img src="{{ asset('images/' . $item->product->image) }}"
+                                                    <img src="{{ asset('images/product/' . $item->product->image) }}"
                                                         class="img-fluid rounded-start" alt="...">
                                                 </div>
                                                 <div class="col-md-8">
@@ -82,8 +84,8 @@
                                             </div>
                                         </div>
                                         <?php
-                                            $totalPay += $item->product->price * $item->quantity;
-                                            $quantity += $item->quantity;
+                                        $totalPay += $item->product->price * $item->quantity;
+                                        $quantity += $item->quantity;
                                         ?>
                                     @endforeach
                                 </div>

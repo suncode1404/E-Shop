@@ -37,8 +37,8 @@
                     <tr>
                         <td class="align-middle">ORD00{{ $od->id }}</td>
                         <td class="align-middle">
-                            <img src="{{ asset('images/' . $od->product->image) }}" class="img-fluid rounded-start"
-                                alt="...">
+                            <img src="{{ asset('images/product/' . $od->product->image) }}" class="img-fluid rounded-start"
+                                alt="..." style="height: 200px" >
                         </td>
                         <td class="align-middle">{{ $od->product->name }}</td>
                         <td class="align-middle">{{ $od->quantity }}</td>

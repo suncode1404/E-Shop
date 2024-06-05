@@ -66,8 +66,8 @@
                                                      title="Remove this item"><i class="fa fa-remove"></i></a>
                                                  <a class="cart-img"
                                                      href="{{ route('client.product', $sp->product->id) }}"><img
-                                                         src="{{ asset('images/' . $sp->product->image) }}"
-                                                         alt="#"></a>
+                                                         src="{{ asset('images/product/' . $sp->product->image) }}"
+                                                         alt="#" class="img-fluid"></a>
                                                  <h4><a href="#">{{ $sp->product->name }}</a></h4>
                                                  <p class="quantity">{{ $sp['quantity'] }} - <span
                                                          class="amount">{{ number_format($sp['price'], 0, '.', '.') }}vnđ</span>
@@ -87,6 +87,10 @@
                                              </div>
                                              <a href="{{ route('client.checkout') }}" class="btn animate">Thanh
                                                  toán</a>
+                                         </div>
+                                     @else
+                                         <div class="bottom">
+                                             <a href="{{ route('client.shop') }}" class="btn animate">Mua hàng</a>
                                          </div>
                                      @endif
                                  @else
@@ -142,7 +146,8 @@
                              <ul class="main-category">
                                  {{-- Categrory --}}
                                  @foreach ($categories as $cg)
-                                     <li><a href="{{ route('client.shop.related', $cg->id) }}">{{ $cg->name }}</a>
+                                     <li><a
+                                             href="{{ route('client.shop.related', $cg->id) }}">{{ $cg->name }}</a>
                                      </li>
                                  @endforeach
                              </ul>

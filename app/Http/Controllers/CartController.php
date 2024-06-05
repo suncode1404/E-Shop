@@ -166,7 +166,7 @@ class CartController extends Controller
         // toast('Bạn chưa chọn phương thức thanh toán','error');
         toast('Bạn chưa chọn phương thức thanh toán', 'error');
 
-        return redirect()->back();
+        return redirect()->back()->withInput();
     }
 
     protected function cash_pay($inf)

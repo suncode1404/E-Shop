@@ -19,8 +19,4 @@ class Controller extends BaseController
         $categories = Categories::all();
         View::share('categories', $categories);
     }
-
-    public function header() {
-            
-    }
 }

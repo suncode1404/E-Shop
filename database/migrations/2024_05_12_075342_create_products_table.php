@@ -48,13 +48,11 @@ return new class extends Migration
         Schema::create('product_specification', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products');
-            $table->string('content', 255);
-            $table->foreignId('company_id')->constrained('company');
-            $table->string('type');
-            $table->integer('ram');
-            $table->integer('capacity');
-            $table->integer('screen_size');
-            $table->string('card_screen');
+            $table->string('ram');
+            $table->string('cpu');
+            $table->string('dia_cung');
+            $table->string('mau_sac');
+            $table->float('can_nang');
         });
        
     }

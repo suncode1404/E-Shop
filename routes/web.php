@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $categories = Categories::all();
-    // dd($categories);
     //Phương thức active lấy ra sản phẩm active mặc định 8 sp
     $products = Product::active(8)->get();
     //Phương thức hot lấy ra sản phẩm hot mặc định 8 sp
@@ -63,5 +63,6 @@ Route::group(['middleware' => ['users']], function () {
 });
 Route::group(['middleware' => ['admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('admin/user', UserController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('product', AdminProductController::class);
 });

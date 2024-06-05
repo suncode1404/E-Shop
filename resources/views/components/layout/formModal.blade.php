@@ -108,7 +108,7 @@
     var description = document.getElementById('description');
     var imgAll = document.querySelectorAll('.single-slider img');
     var products = @json($array);
-    // console.log(imgAll);
+    // console.log(products);
     linkElements.forEach(function(linkElement) {
         linkElement.addEventListener('click', function(event) {
             event.preventDefault();
@@ -122,7 +122,7 @@
                         productArr = productArr['data']
                     }
                     var imgText = productArr[value].image 
-                    var descriptionText = productArr[value].description;
+                    var descriptionText = productArr[value].short_description;
                     var nameText = productArr[value].name;
                     var priceText = productArr[value].price;
                     var formattedNumber = new Intl.NumberFormat('vi-VN').format(priceText);
@@ -131,7 +131,7 @@
                     name.innerHTML = nameText;
                     price.innerHTML = formattedNumber + "đ";
                         imgAll.forEach((img, index, array) => {
-                            img.src = window.location.origin+'/images/'+imgText
+                            img.src = window.location.origin+'/images/product/'+imgText
                             // console.log(img);
                         })
                     console.log(name);

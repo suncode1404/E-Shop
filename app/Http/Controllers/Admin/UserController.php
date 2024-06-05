@@ -25,7 +25,8 @@ class UserController extends Controller
     {
         $route = route('admin.user.store');
         $method = 'POST';
-        return view('admin.form.user.store', compact('route', 'method'));
+        $title = 'Thêm';
+        return view('admin.form.user.store', compact('route', 'method','title'));
     }
 
     /**
@@ -62,7 +63,8 @@ class UserController extends Controller
         $user = User::where('id', $id)->get()->first();
         $route = route('admin.user.update', $id);
         $method = 'PUT';
-        return view('admin.form.user.store', compact('user', 'route', 'method'));
+        $title = 'Sửa';
+        return view('admin.form.user.store', compact('user', 'route', 'method','title'));
     }
 
     /**

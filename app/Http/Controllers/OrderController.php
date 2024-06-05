@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function order() {
-        $order = Order::all();
+        $order = Order::where('user_id',Auth::id())->orderBy('id','desc')->paginate(3);
         return view('client.form.info_order',compact('order'));
     }
     public function order_detail(string $id) {

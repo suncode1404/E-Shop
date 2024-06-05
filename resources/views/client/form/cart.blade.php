@@ -27,57 +27,56 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- {{dd($cartItemAll)}} --}}
                             <?php $totalPay = 0; ?>
-                            @if (is_array(session('cart' . Auth::id())) || is_object(session('cart' . Auth::id())))
-                                @foreach ($cartItemAll as $key => $item)
-                                    <tr>
-                                        <td class="id" data-id="Id">
-                                            {{$item->id}}
-                                        </td>
-                                        <td class="image" data-title="No"><img class="image-fluid"
-                                                src="{{ asset('images/' . $item->product->image) }}" alt="#"></td>
-                                        <td class="product-des" data-title="Description">
-                                            <p class="product-name"><a
-                                                    href="{{ route('client.product', $item->product->id) }}">{{ $item->product->name }}</a>
-                                            </p>
-                                            <p class="product-des">{{ $item->product->short_description }}</p>
-                                        </td>
-                                        <td class="price" data-title="Price">
-                                            <span>{{ number_format($item->product->price, 0, '.', '.') }}đ</span>
-                                        </td>
-                                        <td class="qty" data-title="Qty">
-                                            <div class="quantity">
-                                                <!-- Input Order -->
-                                                <div class="input-group">
-                                                    <div class="button minus">
-                                                        <button type="button" class="btn btn-primary btn-number"
-                                                            data-type="minus" data-field="quant[1]">
-                                                            <i class="ti-minus"></i>
-                                                        </button>
-                                                    </div>
-                                                    <input type="number" name="quant[1]" class="input-number" min="1"
-                                                        data-min="1" data-max="{{$item->product->quantity_available}}" value="{{$item->quantity}}">
-                                                    <div class="button plus">
-                                                        <button type="button" class="btn btn-primary btn-number"
-                                                            data-type="plus" data-field="quant[1]">
-                                                            <i class="ti-plus"></i>
-                                                        </button>
-                                                    </div>
+                            @foreach ($cartItemAll as $key => $item)
+                                <tr>
+                                    <td class="id" data-id="Id">
+                                        {{ $item->id }}
+                                    </td>
+                                    <td class="image" data-title="No"><img class="image-fluid"
+                                            src="{{ asset('images/product/' . $item->product->image) }}" alt="#">
+                                    </td>
+                                    <td class="product-des" data-title="Description">
+                                        <p class="product-name"><a
+                                                href="{{ route('client.product', $item->product->id) }}">{{ $item->product->name }}</a>
+                                        </p>
+                                        <p class="product-des">{{ $item->product->short_description }}</p>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <span>{{ number_format($item->product->price, 0, '.', '.') }}đ</span>
+                                    </td>
+                                    <td class="qty" data-title="Qty">
+                                        <div class="quantity">
+                                            <!-- Input Order -->
+                                            <div class="input-group">
+                                                <div class="button minus">
+                                                    <button type="button" class="btn btn-primary btn-number"
+                                                        data-type="minus" data-field="quant[1]">
+                                                        <i class="ti-minus"></i>
+                                                    </button>
                                                 </div>
-                                                <!--/ End Input Order -->
+                                                <input type="number" name="quant[1]" class="input-number" min="1"
+                                                    data-min="1" data-max="{{ $item->product->quantity_available }}"
+                                                    value="{{ $item->quantity }}">
+                                                <div class="button plus">
+                                                    <button type="button" class="btn btn-primary btn-number"
+                                                        data-type="plus" data-field="quant[1]">
+                                                        <i class="ti-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </td>
-                                        <td class="total-amount" id="total-amount" data-title="Total">
-                                            <span>{{ number_format($item->total_price, 0, '.', '.') }}đ</span>
-                                        </td>
-                                        <td class="action" data-title="Remove"><a
-                                                href="{{ route('client.cart.logout', $key) }}"><i
-                                                    class="ti-trash remove-icon"></i></a></td>
-                                        <?php $totalPay += $item->total_price; ?>
-                                    </tr>
-                                @endforeach
-                            @endif
+                                            <!--/ End Input Order -->
+                                        </div>
+                                    </td>
+                                    <td class="total-amount" id="total-amount" data-title="Total">
+                                        <span>{{ number_format($item->total_price, 0, '.', '.') }}đ</span>
+                                    </td>
+                                    <td class="action" data-title="Remove"><a
+                                            href="{{ route('client.cart.logout', $key) }}"><i
+                                                class="ti-trash remove-icon"></i></a></td>
+                                    <?php $totalPay += $item->total_price; ?>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <!--/ End Shopping Summery -->
@@ -110,7 +109,8 @@
                                         </li>
                                         <li>Shipping<span></span></li>
                                         <li>You Save<span></span></li>
-                                        <li class="last" id="carttotal">You Pay<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span>
+                                        <li class="last" id="carttotal">You
+                                            Pay<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span>
                                         </li>
                                     </ul>
                                     <div class="button5">

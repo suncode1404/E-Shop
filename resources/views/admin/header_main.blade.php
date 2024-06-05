@@ -56,13 +56,15 @@
                         aria-current="true" data-bs-toggle="collapse" href="#BuyCar" role="button"
                         aria-expanded="false" aria-controls="BuyCar">
                         <div class="fw-medium">
-                            <i class="bi bi-basket2 pe-2"></i>Quản lý xe bán hàng
+                            <i class="bi bi-basket2 pe-2"></i>Quản lý sản phẩm
                         </div>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <div class="collapse" id="BuyCar">
                         <div class="list-group list-group-flush ">
-                            <div class="list-group-item border border-0 py-3 px-4 ">Thống kê doanh thu tháng
+                            <div class="list-group-item border border-0 py-3 px-4 ">
+                                <a href="{{ route('admin.product.index') }}" class="text-decoration-none text-black">Danh
+                                    mục sản phẩm</a>
                             </div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu ngày</div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>

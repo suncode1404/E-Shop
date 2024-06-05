@@ -10,7 +10,6 @@ class AdminController extends Controller
     public function dashboard()
     {
         $admin = Auth::user();
-        toast('Chào mừng,' . $admin->name, 'success');
         return view('admin.form.dashboard');
     }
 }
