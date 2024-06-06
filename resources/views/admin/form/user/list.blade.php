@@ -74,12 +74,12 @@
                                 <i class="bi bi-three-dots-vertical" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false"></i>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('admin.user.edit', $user->id) }}">Edit</a>
+                                    <li><a class="dropdown-item" href="{{ route('admin.user.edit', $user->id) }}">Sửa</a>
                                     </li>
                                     <li>
                                         <div type="button" class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#Delete{{ $user->id }}"> {{-- #ten+ id  --}}
-                                            Delete
+                                            Xóa
                                         </div>
                                         {{-- <a class="dropdown-item" href="#">Delete</a> --}}
                                     </li>

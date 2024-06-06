@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuantityController;
 use App\Models\Categories;
@@ -50,7 +52,11 @@ Route::group(['middleware' => ['users']], function () {
     Route::post('/cart/addProduct/{id}', [CartController::class, 'addProduct'])->name('client.cart.addProduct');
     Route::get('/cart/logout/{id}', [CartController::class, 'logout'])->name('client.cart.logout');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('client.checkout');
+    //Thanh toán
     Route::post('/car/payment', [CartController::class, 'payment'])->name('client.cart.payment');
+
+    Route::get('/momo-return', [PaymentController::class, 'handleMoMoReturn']);
+
     Route::post('/update-quantity', [QuantityController::class, 'update'])->name('quantity.update');
     //Đơn hàng
     Route::get('/order', [OrderController::class, 'order'])->name('client.order');
@@ -63,6 +69,7 @@ Route::group(['middleware' => ['users']], function () {
 });
 Route::group(['middleware' => ['admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::resource('user', UserController::class);
+    Route::resource('user', AdminUserController::class);
     Route::resource('product', AdminProductController::class);
+    Route::resource('category', AdminCategoryController::class);
 });

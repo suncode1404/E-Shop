@@ -19,9 +19,9 @@ class CartController extends Controller
     public function cart()
     {
         $title = 'Giỏ hàng';
-        $cartItemAll =[];
+        $cartItemAll = [];
         $cart = Cart::where('user_id', Auth::id())->first();
-        if($cart) {
+        if ($cart) {
             $cartItemAll = CartItem::where('cart_id', $cart->id)->get();
         }
         return view('client.form.cart', compact("title", "cartItemAll"));
@@ -157,8 +157,10 @@ class CartController extends Controller
             alert('Đặt hàng thành công', 'Cảm ơn quý khách đã tin tưởng dịch vụ của E-shop', 'success');
             return redirect()->route('client.home');
         }
-        if ($request->payment === 'paypal') {
-            $this->paypal_pay($request);
+        if ($request->payment == 2) {
+            return $this->momo($request);
+            // alert('Đặt hàng thành công', 'Cảm ơn quý khách đã tin tưởng dịch vụ của E-shop', 'success');
+            // return redirect()->route('client.home');
         }
         if ($request->payment === 'credit') {
             $this->credit_pay($request);
@@ -211,19 +213,77 @@ class CartController extends Controller
                 'quantity' => $item->quantity,
                 'total_price' => $item->total_price
             ]);
-            $product = Product::where('id',$item->product_id)->get()->first();
-            Product::where('id',$item->product_id)->update([
+            $product = Product::where('id', $item->product_id)->get()->first();
+            Product::where('id', $item->product_id)->update([
                 'quantity_available' => $product->quantity_available - $item->quantity,
             ]);
         }
         session()->forget('cart' . Auth::id());
         $cart->delete();
     }
-    protected function paypal_pay($inf)
+    public function execPostRequest($url, $data)
     {
-        dd('paypal');
-        alert('Đặt hàng thành công', 'Cảm ơn quý khách đã tin tưởng dịch vụ của E-shop', 'success');
-        return redirect()->route('client.home');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
+    }
+    protected function momo($inf)
+    {
+        // dd($inf->request->all());
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+        $amount = $inf->total_price;
+        $orderId = time() . "";
+        $redirectUrl = "http://localhost:8000/momo-return";
+        $ipnUrl = "http://localhost:8000/";
+        $extraData = "$inf->name,$inf->email,$inf->phone,$inf->address,$inf->customer_notes,$inf->quantity";
+
+
+
+        $requestId = time() . "";
+        $requestType = "payWithATM";
+        //before sign HMAC SHA256 signature
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+        $data = array(
+            'partnerCode' => $partnerCode,
+            'partnerName' => "Test",
+            "storeId" => "MomoTestStore",
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'lang' => 'vi',
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature,
+        );
+        $result = $this->execPostRequest($endpoint, json_encode($data));
+        $jsonResult = json_decode($result, true);  // decode json
+        //Just a example, please check more in there
+        return redirect()->to($jsonResult['payUrl']);
     }
     protected function credit_pay($inf)
     {

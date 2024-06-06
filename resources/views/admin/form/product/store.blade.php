@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'User Form')
+@section('title', 'Form sản phẩm')
 @push('css')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
@@ -10,20 +10,25 @@
         $hot = ['bình thường', 'hot'];
         $hidden = ['Ẩn', 'hiện'];
     @endphp
-    <a href="{{ route('admin.product    .index') }}">Quay lại</a>
+    <a href="{{ route('admin.product.index') }}">Quay lại</a>
     <div class="card-body">
         <div class="fs-4 my-2">{{ $title }} người dùng </div>
         <form method="POST" action="{{ $route }}" enctype="multipart/form-data">
             @csrf
             @method($method)
             <!-- Thẻ img để hiển thị ảnh xem trước ngay dưới input -->
-            <img id="imagePreview" src="" alt="Ảnh xem trước" class="img-thumbnail mt-2"
-                style="display:none; max-width: 300px; height: 300px;">
+            @if (isset($product) && $product->image)
+                <img id="imagePreview" src="{{ asset('images/product/' . $product->image) }}" alt="Product Image"
+                    style="max-width: 200px; display: block;">
+            @else
+                <img id="imagePreview" src="" alt="Product Image" style="max-width: 200px; display: none;">
+            @endif
             <div class="row">
                 <div class="mb-3 col-md-6">
                     <label for="image" class="form-label">Ảnh</label>
                     <input type="file" class="form-control" id="image" name="image"
                         value="{{ old('image', isset($product) ? $product->image : '') }}" accept="image/png, image/jpeg">
+                    <input type="hidden" name="image" value="{{ old('image', isset($product) ? $product->image : '') }}">
                     @error('image')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
@@ -69,7 +74,7 @@
                     <label for="hot" class="form-label">Sản phẩm Hot</label>
                     <select id="hot" name="hot" class="select2 form-select" fdprocessedid="mx0bgf">
                         @foreach ($hot as $key => $h)
-                            <option {{ $key == old('hot', isset($product) ? $product->role : '') ? 'selected' : '' }}
+                            <option {{ $key == old('hot', isset($product) ? $product->hot : '') ? 'selected' : '' }}
                                 value="{{ $key }}">
                                 {{ ucfirst($h) }}
                             </option>
@@ -80,7 +85,8 @@
                     <label for="hidden" class="form-label">Sản phẩm ẩn hiện</label>
                     <select id="hidden" name="hidden" class="select2 form-select" fdprocessedid="mx0bgf">
                         @foreach ($hidden as $key => $h)
-                            <option {{ $key == old('hidden', isset($product) ? $product->role : '') ? 'selected' : '' }}
+                            <option
+                                {{ $key == old('hidden', isset($product) ? $product->hiddencategory : '') ? 'selected' : '' }}
                                 value="{{ $key }}">
                                 {{ ucfirst($h) }} </option>
                         @endforeach

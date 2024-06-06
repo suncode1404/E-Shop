@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->integer('priority')->default(0)->comment('Thứ tự xuất hiện');
             $table->boolean('hidden')->default(0)->comment('0 là ẩn, 1 là hiện');
+            $table->timestamps();
         });
         
         Schema::create('products', function (Blueprint $table) {

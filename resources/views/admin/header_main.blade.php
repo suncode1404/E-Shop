@@ -32,7 +32,7 @@
                         aria-current="true" data-bs-toggle="collapse" href="#User" role="button"
                         aria-expanded="false" aria-controls="User">
                         <div class="fw-medium">
-                            <i class="bi bi-people"></i></i>Quản lý tài khoản
+                            <i class="bi bi-people pe-2"></i></i>Quản lý tài khoản
                         </div>
                         <i class="bi bi-chevron-down"></i>
                     </button>
@@ -63,10 +63,10 @@
                     <div class="collapse" id="BuyCar">
                         <div class="list-group list-group-flush ">
                             <div class="list-group-item border border-0 py-3 px-4 ">
-                                <a href="{{ route('admin.product.index') }}" class="text-decoration-none text-black">Danh
+                                <a href="{{ route('admin.product.index') }}"
+                                    class="text-decoration-none text-black">Danh
                                     mục sản phẩm</a>
                             </div>
-                            <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu ngày</div>
                             <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>
                         </div>
                     </div>
@@ -80,14 +80,15 @@
                         aria-current="true" data-bs-toggle="collapse" href="#Employee" role="button"
                         aria-expanded="false" aria-controls="Employee">
                         <div class="fw-medium">
-                            <i class="bi bi-person-gear pe-2"></i>Quản lý nhân viên
+                            <i class="bi bi-person-lines-fill pe-2"></i></i>Quản lý danh mục
                         </div>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <div class="collapse" id="Employee">
-                        <div class="list-group list-group-flush ">
-                            <div class="list-group-item border border-0 py-3 px-4 ">Danh sách nhân viên </div>
-
+                        <div class="list-group-item border border-0 py-3 px-4 ">
+                            <a href="{{ route('admin.category.index') }}" class="text-decoration-none text-black">Danh
+                                mục loại
+                                sản phẩm</a>
                         </div>
                     </div>
 

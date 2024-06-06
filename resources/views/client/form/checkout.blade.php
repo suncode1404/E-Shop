@@ -100,9 +100,9 @@
                                 <h2>Tổng giỏ hàng</h2>
                                 <div class="content">
                                     <ul>
-                                        <li>Sub Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span></li>
+                                        <li>Sub Total<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span></li>
                                         <li>(+) Shipping<span>00đ</span></li>
-                                        <li class="last">Total<span>{{ number_format($totalPay, 2, '.', '.') }}đ</span>
+                                        <li class="last">Total<span>{{ number_format($totalPay, 0, '.', '.') }}đ</span>
                                         </li>
                                         <input type="hidden" name="total_price" value="{{ $totalPay }}">
                                         <input type="hidden" name="quantity" value="{{ $quantity }}">
