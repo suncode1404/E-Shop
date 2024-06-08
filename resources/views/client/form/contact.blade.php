@@ -19,36 +19,52 @@
                                 <h4>Liên lạc</h4>
                                 <h3>Để lại lời nhắn</h3>
                             </div>
-                            <form class="form" method="post" action="mail/mail.php">
+                            <form class="form" method="post" action="{{ route('client.contact.email') }}">
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
                                             <label>Tên<span>*</span></label>
-                                            <input name="name" type="text" placeholder="">
+                                            <input name="name" type="text" placeholder="" value="{{old('name')}}">
+                                            @error('name')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
                                             <label>Chủ đề<span>*</span></label>
-                                            <input name="subject" type="text" placeholder="">
+                                            <input name="subject" type="text" placeholder="" value="{{old('subject')}}">
+                                            @error('subject')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
                                             <label>Email<span>*</span></label>
-                                            <input name="email" type="email" placeholder="">
+                                            <input name="email" type="email" placeholder="" value="{{old('email')}}">
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
                                             <label>Số điện thoại<span>*</span></label>
-                                            <input name="company_name" type="text" placeholder="">
+                                            <input name="phone" type="text" placeholder="" value="{{old('phone')}}">
+                                            @error('phone')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group message">
                                             <label>Ghi chú<span>*</span></label>
-                                            <textarea name="message" placeholder=""></textarea>
+                                            <textarea name="message" placeholder="">{{old('message')}}</textarea>
+                                            @error('message')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">

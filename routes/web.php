@@ -7,10 +7,12 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuantityController;
+use App\Http\Controllers\UserController;
 use App\Models\Categories;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +34,10 @@ Route::get('/shop', [ProductController::class, 'index'])->name('client.shop');
 Route::get('/shop/related/{id?}', [ProductController::class, 'related'])->name('client.shop.related');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('client.product');
 
+//Gửi contact
 Route::get('/contact', [ContactController::class, 'index'])->name('client.contact');
+Route::post('/contact/email', [MailController::class, 'mail'])->name('client.contact.email');
+
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 
 Route::group(['middleware' => ['guest']], function () {
@@ -45,6 +50,11 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => ['users']], function () {
+    //User
+    Route::get('user', [UserController::class, 'infoUser'])->name('client.user.info');
+    Route::post('user/update', [UserController::class, 'updateInfoUser'])->name('client.user.info.update');
+    Route::get('user/resetPassword', [UserController::class, 'resetPassword'])->name('client.user.resetPassword');
+    Route::post('user/resetPassword/update', [UserController::class, 'updateResetPassword'])->name('client.user.resetPassword.update');
     //Logout
     Route::get('/logout', [LoginController::class, 'logout'])->name('account.logout');
     //Add product in cart

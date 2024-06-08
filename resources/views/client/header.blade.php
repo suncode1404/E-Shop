@@ -112,11 +112,15 @@
                                  <!-- Shopping Item -->
                                  <div class="shopping-item">
                                      <ul class="shopping-list">
-                                         <li>Thông tin tài khoản</li>
+                                         <li>
+                                            <a href="{{ route('client.user.info') }}">Thông tin tài khoản</a>
+                                        </li>
                                          <li>
                                              <a href="{{ route('client.order') }}">Thông tin đơn hàng</a>
                                          </li>
-                                         <li>Đổi mặt khẩu</li>
+                                         <li>
+                                            <a href="{{ route('client.user.resetPassword') }}">Đổi mặt khẩu</a>
+                                        </li>
                                      </ul>
                                      <div class="bottom">
                                          <a href="{{ route('account.logout') }}" class="btn animate">Đăng xuát</a>
