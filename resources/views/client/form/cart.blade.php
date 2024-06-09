@@ -115,7 +115,7 @@
                                     </ul>
                                     <div class="button5">
                                         <a href="{{ route('client.checkout') }}" class="btn">Thanh toán</a>
-                                        <a href="{{ route('client.shop') }}" class="btn">Continue shopping</a>
+                                        <a href="{{ route('client.shop') }}" class="btn">Tiếp tục mua sắm</a>
                                     </div>
                                 </div>
                             </div>

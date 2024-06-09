@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CartRequest;
 use App\Http\Requests\OrderRequest;
-use App\Http\Requests\UserRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;

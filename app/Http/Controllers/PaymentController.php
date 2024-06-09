@@ -7,58 +7,10 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function handleMoMoNotification(Request $request)
-    {
-        // Ghi lại yêu cầu thông báo
-        // Log::info('Thông báo từ MoMo:', $request->all());
-
-        // Trích xuất dữ liệu từ yêu cầu
-        $data = $request->all();
-        $partnerCode = $data['partnerCode'];
-        $orderId = $data['orderId'];
-        $requestId = $data['requestId'];
-        $amount = $data['amount'];
-        $orderInfo = $data['orderInfo'];
-        $orderType = $data['orderType'];
-        $transId = $data['transId'];
-        $resultCode = $data['resultCode'];
-        $message = $data['message'];
-        $payType = $data['payType'];
-        $responseTime = $data['responseTime'];
-        $extraData = $data['extraData'];
-        $signature = $data['signature'];
-
-        // Xác minh chữ ký
-        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-        $rawHash = "partnerCode=" . $partnerCode . "&orderId=" . $orderId . "&requestId=" . $requestId . "&amount=" . $amount . "&orderInfo=" . $orderInfo . "&orderType=" . $orderType . "&transId=" . $transId . "&resultCode=" . $resultCode . "&message=" . $message . "&payType=" . $payType . "&responseTime=" . $responseTime . "&extraData=" . $extraData;
-        $computedSignature = hash_hmac("sha256", $rawHash, $secretKey);
-
-        if ($computedSignature === $signature && $resultCode == '0') {
-            // Thanh toán thành công, tạo đơn hàng
-            // Tạo đơn hàng trong cơ sở dữ liệu
-            // Ví dụ:
-            // Order::create([
-            //     'order_id' => $orderId,
-            //     'amount' => $amount,
-            //     'status' => 'paid',
-            //     'transaction_id' => $transId,
-            // ]);
-
-            dd('tạo order thanh công');
-            // Log::info('Đơn hàng được tạo thành công cho orderId: ' . $orderId);
-        } else {
-            dd('Chữ ký MoMo không hợp lệ hoặc thanh toán thất bại cho orderId');
-            // Log::error('Chữ ký MoMo không hợp lệ hoặc thanh toán thất bại cho orderId: ' . $orderId);
-        }
-
-        // Trả lời với HTTP 200 để xác nhận đã nhận được thông báo
-        return response()->json(['status' => 'success'], 200);
-    }
     public function handleMoMoReturn()
     {
         $resultCode = $_GET["resultCode"];

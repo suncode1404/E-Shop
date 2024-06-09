@@ -42,8 +42,6 @@
                                 <a href="{{ route('admin.user.index') }}" class="text-decoration-none text-black">Danh
                                     sách tài khoản</a>
                             </div>
-                            <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu ngày</div>
-                            <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>
                         </div>
                     </div>
 
@@ -67,7 +65,6 @@
                                     class="text-decoration-none text-black">Danh
                                     mục sản phẩm</a>
                             </div>
-                            <div class="list-group-item border border-0 py-3 px-4">Thống kê doanh thu năm</div>
                         </div>
                     </div>
 
@@ -101,13 +98,16 @@
                         aria-current="true" data-bs-toggle="collapse" href="#Menu" role="button"
                         aria-expanded="false" aria-controls="Menu">
                         <div class="fw-medium">
-                            <i class="bi bi-table pe-2"></i>Quản lý menu
+                            <i class="bi bi-table pe-2"></i>Quản lý đơn hàng
                         </div>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     <div class="collapse" id="Menu">
                         <div class="list-group list-group-flush ">
-                            <div class="list-group-item border border-0 py-3 px-4 ">Danh sách thực đơn</div>
+                            <div class="list-group-item border border-0 py-3 px-4 ">
+                                <a href="{{ route('admin.order.index') }}"
+                                    class="text-decoration-none text-black">Danh sách đơn hàng</a>
+                            </div>
                             <div class="list-group-item border border-0 py-3 px-4 ">Trạng thái các thực đơn
                             </div>
                         </div>
